@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Black Ops 7 Launch Countdown</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ========================
+       GLOBAL DARK THEME
+    ========================= */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden; /* Prevent scrolling */
+      font-family: 'Montserrat', sans-serif;
+      background-color: #0d1117;
+      color: #ffffff;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ========================
+       GLOWING SPHERES
+    ========================= */
+    body::before,
+    body::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.9;
+      animation: pulseGlow 6s ease-in-out infinite alternate;
+      z-index: 0;
+    }
+
+    body::before {
+      top: -15vw;
+      left: -15vw;
+      width: 35vw;
+      height: 35vw;
+      background: radial-gradient(circle, rgba(250,103,0,1) 0%, transparent 50%);
+    }
+
+    body::after {
+      bottom: -15vw;
+      right: -15vw;
+      width: 35vw;
+      height: 35vw;
+      background: radial-gradient(circle, rgba(98,163,231,0.75) 0%, transparent 50%);
+      animation-delay: 3s;
+    }
+
+    @keyframes pulseGlow {
+      0% { opacity: 0.6; transform: scale(1); }
+      100% { opacity: 1; transform: scale(1.2); }
+    }
+
+    /* ========================
+       SUBTLE GRID TEXTURE
+    ========================= */
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* ========================
+       CENTERED CONTENT
+    ========================= */
+    .container-wrapper {
+      width: 100%;
+      height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      z-index: 2;
+    }
+
+    .container {
+      position: relative;
+      max-width: 800px;
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      box-sizing: border-box;
+      transform-origin: center center;
+      transition: transform 0.4s ease;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #fa6700;
+      text-shadow: 0 0 10px rgba(233,150,21,0.5);
+    }
+
+    p {
+      color: #b0b8c1;
+      margin-bottom: 2rem;
+      font-size: 1rem;
+      max-width: 90%;
+    }
+
+    /* ========================
+       COUNTDOWN STYLING
+    ========================= */
+    .countdown {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+      width: 100%;
+    }
+
+    .time-box {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-top: 2px solid #62a3e7;
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      min-width: 90px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .time-value {
+      font-size: 2.5rem;
+      font-weight: 600;
+      display: block;
+      color: #ffffff;
+      text-shadow: 0 0 6px rgba(98,163,231,0.4);
+    }
+
+    .time-label {
+      font-size: 0.9rem;
+      color: #62a3e7;
+    }
+
+    .end-message {
+      font-size: 1.4rem;
+      margin-top: 1.5rem;
+      color: #fa6700;
+      text-shadow: 0 0 8px rgba(233,150,21,0.5);
+    }
+
+    .image-container {
+      margin-top: 2rem;
+    }
+
+    .image-container img {
+      width: 160px;
+      height: auto;
+      opacity: 0.9;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    /* ========================
+       RESPONSIVE DESIGN
+    ========================= */
+    @media (max-width: 700px) {
+      h1 { font-size: 1.5rem; }
+      p { font-size: 0.9rem; }
+      .time-value { font-size: 2rem; }
+      .countdown { gap: 1rem; margin-bottom: 2rem; }
+      .image-container img { width: 120px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Subtle line grid overlay -->
+  <div class="overlay"></div>
+
+  <div class="container-wrapper">
+    <div class="container" id="scalable-container">
+        <!-- First Countdown -->
+        <h1>Black Ops 7 New Zealand Launch</h1>
+        <p><b>November 14, 12:00am NZST</b> – Console & Xbox PC App</p>
+        <div id="countdown1" class="countdown">
+          <div class="time-box"><span id="days1" class="time-value">00</span><span class="time-label">Days</span></div>
+          <div class="time-box"><span id="hours1" class="time-value">00</span><span class="time-label">Hours</span></div>
+          <div class="time-box"><span id="minutes1" class="time-value">00</span><span class="time-label">Minutes</span></div>
+          <div class="time-box"><span id="seconds1" class="time-value">00</span><span class="time-label">Seconds</span></div>
+        </div>
+        <div id="end1" class="end-message" style="display:none;">Black Ops 7 has launched in New Zealand!</div>
+
+        <!-- Second Countdown -->
+        <h1>Black Ops 7 PC Launch</h1>
+        <p><b>November 14, 6:00am</b> – Global PC Release</p>
+        <div id="countdown2" class="countdown">
+          <div class="time-box"><span id="days2" class="time-value">00</span><span class="time-label">Days</span></div>
+          <div class="time-box"><span id="hours2" class="time-value">00</span><span class="time-label">Hours</span></div>
+          <div class="time-box"><span id="minutes2" class="time-value">00</span><span class="time-label">Minutes</span></div>
+          <div class="time-box"><span id="seconds2" class="time-value">00</span><span class="time-label">Seconds</span></div>
+        </div>
+        <div id="end2" class="end-message" style="display:none;">Black Ops 7 is available worldwide!</div>
+
+        <!-- Logo centered below all -->
+        <div class="image-container">
+          <img src="https://allesmuelleroderwas.de/fileadmin/media/_aktionen/call-of-duty/Muellermilch_2025_CoD_CHIMERA_ICON.png" alt="Operation Chimera Logo">
+        </div>
+    </div>
+</div>
+
+  <script>
+    /* ========================
+       COUNTDOWN SCRIPT
+       - First timer: fixed UTC date.
+       - Second timer: based on user's local device time.
+    ========================= */
+
+    // === FIRST TIMER (UTC fixed) ===
+    const firstTargetUTC = new Date('2025-11-13T11:00:00Z').getTime();
+
+    // === SECOND TIMER (LOCAL time) ===
+    // Example: local launch at 6:00 PM on January 15, 2026 (user's local time)
+    const localDate = new Date(2025, 10, 14, 6, 0, 0); 
+    const secondTargetLocal = localDate.getTime();
+
+    // Shared countdown function
+    function startCountdown(target, ids) {
+      const timer = setInterval(() => {
+        const now = new Date().getTime();
+        const distance = target - now;
+
+        if (distance <= 0) {
+          clearInterval(timer);
+          document.getElementById(ids.block).style.display = 'none';
+          document.getElementById(ids.end).style.display = 'block';
+          return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById(ids.days).textContent = String(days).padStart(2, '0');
+        document.getElementById(ids.hours).textContent = String(hours).padStart(2, '0');
+        document.getElementById(ids.minutes).textContent = String(minutes).padStart(2, '0');
+        document.getElementById(ids.seconds).textContent = String(seconds).padStart(2, '0');
+      }, 1000);
+    }
+
+    // Launch both timers
+    startCountdown(firstTargetUTC, {
+      days: 'days1', hours: 'hours1', minutes: 'minutes1', seconds: 'seconds1',
+      end: 'end1', block: 'countdown1'
+    });
+
+    startCountdown(secondTargetLocal, {
+      days: 'days2', hours: 'hours2', minutes: 'minutes2', seconds: 'seconds2',
+      end: 'end2', block: 'countdown2'
+    });
+
+    /* ========================
+   RESPONSIVE SCALE SCRIPT
+   - Prevent clipping on small screens
+   - Keep readability (never too small)
+   - Smoothly animate scale changes
+  ========================= */
+  const container = document.getElementById('scalable-container');
+  
+  function adjustScale() {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+  
+    // Base reference size (your design’s comfortable desktop view)
+    const baseWidth = 900;
+    const baseHeight = 950;
+  
+    // Calculate proportional scale
+    let scale = Math.min(vw / baseWidth, vh / baseHeight);
+  
+    // Clamp the scale so it never gets too small
+    scale = Math.max(scale, 0.75); // adjust this min scale as needed (0.75–0.85 recommended)
+  
+    // Apply transform with smooth transition
+    container.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
+    container.style.transformOrigin = 'center center';
+    container.style.transform = `scale(${scale})`;
+  }
+  
+  window.addEventListener('resize', adjustScale);
+  window.addEventListener('orientationchange', adjustScale);
+  window.addEventListener('load', adjustScale);
+
+  </script>
+</body>
+</html>
