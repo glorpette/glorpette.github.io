@@ -241,8 +241,7 @@
 
     // === SECOND TIMER (LOCAL time) ===
     // Example: local launch at 6:00 PM on January 15, 2026 (user's local time)
-    const localDate = new Date(2025, 10, 14, 6, 0, 0); 
-    const secondTargetLocal = localDate.getTime();
+    const secondTargetLocal = new Date('2025-11-14T05:00:00Z').getTime();
 
     // Shared countdown function
     function startCountdown(target, ids) {
