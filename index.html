@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Black Ops 7 Launch Countdown</title>
   <link rel="icon" type="image/png" href="chimera_logo.png" />
@@ -101,7 +101,7 @@
 
     .container {
       position: relative;
-      max-width: 800px;
+      max-width: 900px;
       padding: 2rem 1rem;
       display: flex;
       flex-direction: column;
@@ -183,14 +183,113 @@
     }
 
     /* ========================
+       TIMEZONE SIDEBAR LAYOUT (SECTION-SPECIFIC)
+    ========================= */
+    .countdown-layout {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3rem;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto 3rem auto;
+    }
+
+    .countdown-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Force the PC countdown to never wrap on desktop (prevent vertical stacking) */
+    .horizontal-countdown {
+      flex-direction: row !important;
+      justify-content: center;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: nowrap !important;
+    }
+
+    .pc-launch-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto 3rem auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .tz-floating {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      z-index: 3;
+    }
+
+    .tz-left { left: -270px; align-items: flex-end; }
+    .tz-right { right: -283px; align-items: flex-start; }
+
+    .tz-box {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-top: 2px solid #62a3e7;
+      border-radius: 12px;
+      padding: 0.7rem 1rem;
+      font-size: 1.05rem;
+      color: #e0e4ea;
+      white-space: nowrap;
+      text-shadow: 0 0 9px rgba(98,163,231,0.6);
+      box-shadow: 0 0 14px rgba(98,163,231,0.25);
+    }
+
+    .tz-box img {
+      width: 22px;
+      height: 22px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .tz-label {
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    /* ========================
        RESPONSIVE DESIGN
     ========================= */
-    @media (max-width: 700px) {
+    @media (max-width: 950px) {
       h1 { font-size: 1.5rem; }
       p { font-size: 0.9rem; }
       .time-value { font-size: 2rem; }
       .countdown { gap: 1rem; margin-bottom: 2rem; }
       .image-container img { width: 120px; }
+      .tz-floating { display: none; }
+
+      /* Fallback: stack vertically on smaller screens */
+      .countdown-layout {
+        flex-direction: column;
+        gap: 1.2rem;
+      }
+
+      .tz-column {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .tz-box {
+        font-size: 0.9rem;
+        padding: 0.5rem 0.75rem;
+        box-shadow: none;
+      }
     }
   </style>
 </head>
@@ -214,13 +313,22 @@
         <!-- Second Countdown -->
         <h1>Black Ops 7 PC Launch</h1>
         <p><b>November 14, 5:00am UTC</b> – Global PC Release</p>
-        <div id="countdown2" class="countdown">
-          <div class="time-box"><span id="days2" class="time-value">00</span><span class="time-label">Days</span></div>
-          <div class="time-box"><span id="hours2" class="time-value">00</span><span class="time-label">Hours</span></div>
-          <div class="time-box"><span id="minutes2" class="time-value">00</span><span class="time-label">Minutes</span></div>
-          <div class="time-box"><span id="seconds2" class="time-value">00</span><span class="time-label">Seconds</span></div>
+
+        <!-- Three-column layout: left/right timezones + centered countdown -->
+        <div class="pc-launch-wrapper">
+          <!-- Center countdown -->
+          <div id="countdown2" class="countdown horizontal-countdown">
+            <div class="time-box"><span id="days2" class="time-value">00</span><span class="time-label">Days</span></div>
+            <div class="time-box"><span id="hours2" class="time-value">00</span><span class="time-label">Hours</span></div>
+            <div class="time-box"><span id="minutes2" class="time-value">00</span><span class="time-label">Minutes</span></div>
+            <div class="time-box"><span id="seconds2" class="time-value">00</span><span class="time-label">Seconds</span></div>
+          </div>
+          <div id="end2" class="end-message" style="display:none;">Black Ops 7 is available worldwide!</div>
+        
+          <!-- Detached side timezones -->
+          <div class="tz-floating tz-left" id="tz-left"></div>
+          <div class="tz-floating tz-right" id="tz-right"></div>
         </div>
-        <div id="end2" class="end-message" style="display:none;">Black Ops 7 is available worldwide!</div>
 
         <!-- Logo centered below all -->
         <div class="image-container">
@@ -240,7 +348,7 @@
     const firstTargetUTC = new Date('2025-11-13T11:00:00Z').getTime();
 
     // === SECOND TIMER (LOCAL time) ===
-    // Example: local launch at 6:00 PM on January 15, 2026 (user's local time)
+    // Example: local launch at 5:00 AM UTC on Nov 14, 2025
     const secondTargetLocal = new Date('2025-11-14T05:00:00Z').getTime();
 
     // Shared countdown function
@@ -281,28 +389,41 @@
 
     /* ========================
    RESPONSIVE SCALE SCRIPT
-   - Prevent clipping on small screens
-   - Keep readability (never too small)
-   - Smoothly animate scale changes
+   - Adjust scale differently for PC and small screens.
+   - On typical PC widths we *do not* shrink below scale = 1 so horizontal layouts keep space.
+   - On narrow/mobile widths we allow scaling down to keep content readable.
   ========================= */
   const container = document.getElementById('scalable-container');
   
   function adjustScale() {
     const vw = window.innerWidth;
     const vh = window.innerHeight;
-  
-    // Base reference size (your design’s comfortable desktop view)
-    const baseWidth = 900;
-    const baseHeight = 950;
-  
-    // Calculate proportional scale
-    let scale = Math.min(vw / baseWidth, vh / baseHeight);
-  
-    // Clamp the scale so it never gets too small
-    scale = Math.max(scale, 0.75); // adjust this min scale as needed (0.75–0.85 recommended)
-  
+
+    // Desktop threshold (considered "PC" for our purposes)
+    const desktopThreshold = 1000; // px
+
+    // Base reference size (design's comfortable desktop view)
+    const baseWidthDesktop = 1200;
+    const baseHeightDesktop = 850;
+
+    // Base for small screens
+    const baseWidthMobile = 900;
+    const baseHeightMobile = 950;
+
+    let scale;
+
+    if (vw >= desktopThreshold) {
+      // On PC / larger screens: allow small upscales but never shrink below 1
+      scale = Math.min(vw / baseWidthDesktop, vh / baseHeightDesktop);
+      scale = Math.max(scale, 1); // never below 1 on PC — preserves horizontal layout
+    } else {
+      // On mobile / smaller screens: be more permissive but clamp to a minimum
+      scale = Math.min(vw / baseWidthMobile, vh / baseHeightMobile);
+      scale = Math.max(scale, 0.75); // allow shrinking but not too small
+    }
+
     // Apply transform with smooth transition
-    container.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
+    container.style.transition = 'transform 0.45s ease, opacity 0.45s ease';
     container.style.transformOrigin = 'center center';
     container.style.transform = `scale(${scale})`;
   }
@@ -311,6 +432,65 @@
   window.addEventListener('orientationchange', adjustScale);
   window.addEventListener('load', adjustScale);
 
+  /* ========================
+     TIMEZONE CONVERTER (SIDE BOXES)
+     - Uses Twemoji PNG flags
+     - Larger, bolder, vertically centered
+  ========================= */
+  (function renderTimezones() {
+    const tzList = [
+      { zone: "America/Los_Angeles", label: "PT", code: "1f1fa-1f1f8" },
+      { zone: "America/Denver", label: "MT", code: "1f1fa-1f1f8" },
+      { zone: "America/Chicago", label: "CT", code: "1f1fa-1f1f8" },
+      { zone: "America/New_York", label: "ET", code: "1f1fa-1f1f8" },
+      { zone: "Europe/London", label: "GMT", code: "1f1ec-1f1e7" },
+      { zone: "Europe/Berlin", label: "CET", code: "1f1e9-1f1ea" },
+      { zone: "Africa/Johannesburg", label: "SAST", code: "1f1ff-1f1e6" },
+      { zone: "Asia/Kolkata", label: "IST", code: "1f1ee-1f1f3" },
+      { zone: "Asia/Singapore", label: "SGT", code: "1f1f8-1f1ec" },
+      { zone: "Asia/Tokyo", label: "JST", code: "1f1ef-1f1f5" },
+      { zone: "Australia/Sydney", label: "AEDT", code: "1f1e6-1f1fa" },
+      { zone: "Pacific/Auckland", label: "NZDT", code: "1f1f3-1f1ff" }
+    ];
+
+    const utcDate = new Date("2025-11-14T05:00:00Z");
+    const leftContainer = document.getElementById("tz-left");
+    const rightContainer = document.getElementById("tz-right");
+
+    const mid = Math.ceil(tzList.length / 2);
+    const leftZones = tzList.slice(0, mid);
+    const rightZones = tzList.slice(mid);
+
+    function createTimezoneBox(tz) {
+      const local = utcDate.toLocaleString("en-US", {
+        timeZone: tz.zone,
+        month: "short",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true
+      });
+
+      const box = document.createElement("div");
+      box.className = "tz-box";
+
+      const flagImg = document.createElement("img");
+      flagImg.src = `https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/${tz.code}.png`;
+      flagImg.alt = tz.label;
+      flagImg.loading = "lazy";
+
+      const text = document.createElement("span");
+      // dash separator and bold timezone label
+      text.innerHTML = `${local} &ndash; <span class="tz-label">${tz.label}</span>`;
+
+      box.appendChild(flagImg);
+      box.appendChild(text);
+      return box;
+    }
+
+    leftZones.forEach(tz => leftContainer.appendChild(createTimezoneBox(tz)));
+    rightZones.forEach(tz => rightContainer.appendChild(createTimezoneBox(tz)));
+  })();
   </script>
 </body>
 </html>
