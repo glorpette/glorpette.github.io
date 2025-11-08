@@ -16,16 +16,28 @@
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
 
+  <!-- Hitmarker Fonts for countdown only -->
   <style>
-    /* ========================
-       GLOBAL DARK THEME
-    ========================= */
+    @font-face {
+      font-family: 'HitmarkerNormal';
+      src: url('HitmarkerNormal-Regular.woff2') format('woff2');
+      font-weight: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'HitmarkerNormalMedium';
+      src: url('HitmarkerNormal-Medium.woff2') format('woff2');
+      font-weight: normal;
+      font-display: swap;
+    }
+
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
       width: 100%;
-      overflow: hidden; /* Prevent scrolling */
+      overflow: hidden;
       font-family: 'Montserrat', sans-serif;
       background-color: #0d1117;
       color: #ffffff;
@@ -35,9 +47,6 @@
       justify-content: center;
     }
 
-    /* ========================
-       GLOWING SPHERES
-    ========================= */
     body::before,
     body::after {
       content: "";
@@ -71,9 +80,6 @@
       100% { opacity: 1; transform: scale(1.2); }
     }
 
-    /* ========================
-       SUBTLE GRID TEXTURE
-    ========================= */
     .overlay {
       position: absolute;
       inset: 0;
@@ -85,9 +91,6 @@
       pointer-events: none;
     }
 
-    /* ========================
-       CENTERED CONTENT
-    ========================= */
     .container-wrapper {
       width: 100%;
       height: 100dvh;
@@ -127,9 +130,6 @@
       max-width: 90%;
     }
 
-    /* ========================
-       COUNTDOWN STYLING
-    ========================= */
     .countdown {
       display: flex;
       justify-content: center;
@@ -140,6 +140,7 @@
     }
 
     .time-box {
+      font-family: 'HitmarkerNormal', sans-serif;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-top: 2px solid #62a3e7;
@@ -151,14 +152,16 @@
     }
 
     .time-value {
+      font-family: 'HitmarkerNormalMedium', sans-serif;
       font-size: 2.5rem;
-      font-weight: 600;
+      font-weight: normal;
       display: block;
       color: #ffffff;
       text-shadow: 0 0 6px rgba(98,163,231,0.4);
     }
 
     .time-label {
+      font-family: 'HitmarkerNormal', sans-serif;
       font-size: 0.9rem;
       color: #62a3e7;
     }
@@ -182,27 +185,6 @@
       pointer-events: none;
     }
 
-    /* ========================
-       TIMEZONE SIDEBAR LAYOUT (SECTION-SPECIFIC)
-    ========================= */
-    .countdown-layout {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 3rem;
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto 3rem auto;
-    }
-
-    .countdown-center {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* Force the PC countdown to never wrap on desktop (prevent vertical stacking) */
     .horizontal-countdown {
       flex-direction: row !important;
       justify-content: center;
@@ -253,8 +235,6 @@
     .tz-box img {
       width: 22px;
       height: 22px;
-      display: inline-block;
-      vertical-align: middle;
     }
 
     .tz-label {
@@ -262,9 +242,6 @@
       color: #ffffff;
     }
 
-    /* ========================
-       RESPONSIVE DESIGN
-    ========================= */
     @media (max-width: 950px) {
       h1 { font-size: 1.5rem; }
       p { font-size: 0.9rem; }
@@ -272,86 +249,48 @@
       .countdown { gap: 1rem; margin-bottom: 2rem; }
       .image-container img { width: 120px; }
       .tz-floating { display: none; }
-
-      /* Fallback: stack vertically on smaller screens */
-      .countdown-layout {
-        flex-direction: column;
-        gap: 1.2rem;
-      }
-
-      .tz-column {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-
-      .tz-box {
-        font-size: 0.9rem;
-        padding: 0.5rem 0.75rem;
-        box-shadow: none;
-      }
     }
   </style>
 </head>
 <body>
-  <!-- Subtle line grid overlay -->
   <div class="overlay"></div>
 
   <div class="container-wrapper">
     <div class="container" id="scalable-container">
-        <!-- First Countdown -->
         <h1>Black Ops 7 New Zealand Launch</h1>
         <p><b>November 14, 12:00am NZDT</b> – Console & Xbox PC App</p>
         <div id="countdown1" class="countdown">
-          <div class="time-box"><span id="days1" class="time-value">00</span><span class="time-label">Days</span></div>
           <div class="time-box"><span id="hours1" class="time-value">00</span><span class="time-label">Hours</span></div>
           <div class="time-box"><span id="minutes1" class="time-value">00</span><span class="time-label">Minutes</span></div>
           <div class="time-box"><span id="seconds1" class="time-value">00</span><span class="time-label">Seconds</span></div>
         </div>
         <div id="end1" class="end-message" style="display:none;">Black Ops 7 has launched in New Zealand!</div>
 
-        <!-- Second Countdown -->
         <h1>Black Ops 7 PC Launch</h1>
         <p><b>November 14, 5:00am UTC</b> – Global PC Release</p>
 
-        <!-- Three-column layout: left/right timezones + centered countdown -->
         <div class="pc-launch-wrapper">
-          <!-- Center countdown -->
           <div id="countdown2" class="countdown horizontal-countdown">
-            <div class="time-box"><span id="days2" class="time-value">00</span><span class="time-label">Days</span></div>
             <div class="time-box"><span id="hours2" class="time-value">00</span><span class="time-label">Hours</span></div>
             <div class="time-box"><span id="minutes2" class="time-value">00</span><span class="time-label">Minutes</span></div>
             <div class="time-box"><span id="seconds2" class="time-value">00</span><span class="time-label">Seconds</span></div>
           </div>
           <div id="end2" class="end-message" style="display:none;">Black Ops 7 is available worldwide!</div>
-        
-          <!-- Detached side timezones -->
+
           <div class="tz-floating tz-left" id="tz-left"></div>
           <div class="tz-floating tz-right" id="tz-right"></div>
         </div>
 
-        <!-- Logo centered below all -->
         <div class="image-container">
           <img src="chimera_logo.png" alt="Call of Duty Black Ops 7 - Chimera Logo">
         </div>
     </div>
-</div>
+  </div>
 
   <script>
-    /* ========================
-       COUNTDOWN SCRIPT
-       - First timer: fixed UTC date.
-       - Second timer: based on user's local device time.
-    ========================= */
-
-    // === FIRST TIMER (UTC fixed) ===
     const firstTargetUTC = new Date('2025-11-13T11:00:00Z').getTime();
-
-    // === SECOND TIMER (LOCAL time) ===
-    // Example: local launch at 5:00 AM UTC on Nov 14, 2025
     const secondTargetLocal = new Date('2025-11-14T05:00:00Z').getTime();
 
-    // Shared countdown function
     function startCountdown(target, ids) {
       const timer = setInterval(() => {
         const now = new Date().getTime();
@@ -364,133 +303,107 @@
           return;
         }
 
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const totalHours = Math.floor(distance / (1000 * 60 * 60));
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        document.getElementById(ids.days).textContent = String(days).padStart(2, '0');
-        document.getElementById(ids.hours).textContent = String(hours).padStart(2, '0');
+        document.getElementById(ids.hours).textContent = String(totalHours).padStart(2, '0');
         document.getElementById(ids.minutes).textContent = String(minutes).padStart(2, '0');
         document.getElementById(ids.seconds).textContent = String(seconds).padStart(2, '0');
       }, 1000);
     }
 
-    // Launch both timers
     startCountdown(firstTargetUTC, {
-      days: 'days1', hours: 'hours1', minutes: 'minutes1', seconds: 'seconds1',
+      hours: 'hours1', minutes: 'minutes1', seconds: 'seconds1',
       end: 'end1', block: 'countdown1'
     });
 
     startCountdown(secondTargetLocal, {
-      days: 'days2', hours: 'hours2', minutes: 'minutes2', seconds: 'seconds2',
+      hours: 'hours2', minutes: 'minutes2', seconds: 'seconds2',
       end: 'end2', block: 'countdown2'
     });
 
-    /* ========================
-   RESPONSIVE SCALE SCRIPT
-   - Adjust scale differently for PC and small screens.
-   - On typical PC widths we *do not* shrink below scale = 1 so horizontal layouts keep space.
-   - On narrow/mobile widths we allow scaling down to keep content readable.
-  ========================= */
-  const container = document.getElementById('scalable-container');
-  
-  function adjustScale() {
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
+    const container = document.getElementById('scalable-container');
+    function adjustScale() {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const desktopThreshold = 1000;
+      const baseWidthDesktop = 1200;
+      const baseHeightDesktop = 850;
+      const baseWidthMobile = 900;
+      const baseHeightMobile = 950;
+      let scale;
 
-    // Desktop threshold (considered "PC" for our purposes)
-    const desktopThreshold = 1000; // px
+      if (vw >= desktopThreshold) {
+        scale = Math.min(vw / baseWidthDesktop, vh / baseHeightDesktop);
+        scale = Math.max(scale, 1);
+      } else {
+        scale = Math.min(vw / baseWidthMobile, vh / baseHeightMobile);
+        scale = Math.max(scale, 0.75);
+      }
 
-    // Base reference size (design's comfortable desktop view)
-    const baseWidthDesktop = 1200;
-    const baseHeightDesktop = 850;
-
-    // Base for small screens
-    const baseWidthMobile = 900;
-    const baseHeightMobile = 950;
-
-    let scale;
-
-    if (vw >= desktopThreshold) {
-      // On PC / larger screens: allow small upscales but never shrink below 1
-      scale = Math.min(vw / baseWidthDesktop, vh / baseHeightDesktop);
-      scale = Math.max(scale, 1); // never below 1 on PC — preserves horizontal layout
-    } else {
-      // On mobile / smaller screens: be more permissive but clamp to a minimum
-      scale = Math.min(vw / baseWidthMobile, vh / baseHeightMobile);
-      scale = Math.max(scale, 0.75); // allow shrinking but not too small
+      container.style.transition = 'transform 0.45s ease, opacity 0.45s ease';
+      container.style.transformOrigin = 'center center';
+      container.style.transform = `scale(${scale})`;
     }
 
-    // Apply transform with smooth transition
-    container.style.transition = 'transform 0.45s ease, opacity 0.45s ease';
-    container.style.transformOrigin = 'center center';
-    container.style.transform = `scale(${scale})`;
-  }
-  
-  window.addEventListener('resize', adjustScale);
-  window.addEventListener('orientationchange', adjustScale);
-  window.addEventListener('load', adjustScale);
+    window.addEventListener('resize', adjustScale);
+    window.addEventListener('orientationchange', adjustScale);
+    window.addEventListener('load', adjustScale);
 
-  /* ========================
-     TIMEZONE CONVERTER (SIDE BOXES)
-     - Uses Twemoji PNG flags
-     - Larger, bolder, vertically centered
-  ========================= */
-  (function renderTimezones() {
-    const tzList = [
-      { zone: "America/Los_Angeles", label: "PT", code: "1f1fa-1f1f8" },
-      { zone: "America/Denver", label: "MT", code: "1f1fa-1f1f8" },
-      { zone: "America/Chicago", label: "CT", code: "1f1fa-1f1f8" },
-      { zone: "America/New_York", label: "ET", code: "1f1fa-1f1f8" },
-      { zone: "Europe/London", label: "GMT", code: "1f1ec-1f1e7" },
-      { zone: "Europe/Berlin", label: "CET", code: "1f1e9-1f1ea" },
-      { zone: "Africa/Johannesburg", label: "SAST", code: "1f1ff-1f1e6" },
-      { zone: "Asia/Kolkata", label: "IST", code: "1f1ee-1f1f3" },
-      { zone: "Asia/Singapore", label: "SGT", code: "1f1f8-1f1ec" },
-      { zone: "Asia/Tokyo", label: "JST", code: "1f1ef-1f1f5" },
-      { zone: "Australia/Sydney", label: "AEDT", code: "1f1e6-1f1fa" },
-      { zone: "Pacific/Auckland", label: "NZDT", code: "1f1f3-1f1ff" }
-    ];
+    (function renderTimezones() {
+      const tzList = [
+        { zone: "America/Los_Angeles", label: "PT", code: "1f1fa-1f1f8" },
+        { zone: "America/Denver", label: "MT", code: "1f1fa-1f1f8" },
+        { zone: "America/Chicago", label: "CT", code: "1f1fa-1f1f8" },
+        { zone: "America/New_York", label: "ET", code: "1f1fa-1f1f8" },
+        { zone: "Europe/London", label: "GMT", code: "1f1ec-1f1e7" },
+        { zone: "Europe/Berlin", label: "CET", code: "1f1e9-1f1ea" },
+        { zone: "Africa/Johannesburg", label: "SAST", code: "1f1ff-1f1e6" },
+        { zone: "Asia/Kolkata", label: "IST", code: "1f1ee-1f1f3" },
+        { zone: "Asia/Singapore", label: "SGT", code: "1f1f8-1f1ec" },
+        { zone: "Asia/Tokyo", label: "JST", code: "1f1ef-1f1f5" },
+        { zone: "Australia/Sydney", label: "AEDT", code: "1f1e6-1f1fa" },
+        { zone: "Pacific/Auckland", label: "NZDT", code: "1f1f3-1f1ff" }
+      ];
 
-    const utcDate = new Date("2025-11-14T05:00:00Z");
-    const leftContainer = document.getElementById("tz-left");
-    const rightContainer = document.getElementById("tz-right");
+      const utcDate = new Date("2025-11-14T05:00:00Z");
+      const leftContainer = document.getElementById("tz-left");
+      const rightContainer = document.getElementById("tz-right");
 
-    const mid = Math.ceil(tzList.length / 2);
-    const leftZones = tzList.slice(0, mid);
-    const rightZones = tzList.slice(mid);
+      const mid = Math.ceil(tzList.length / 2);
+      const leftZones = tzList.slice(0, mid);
+      const rightZones = tzList.slice(mid);
 
-    function createTimezoneBox(tz) {
-      const local = utcDate.toLocaleString("en-US", {
-        timeZone: tz.zone,
-        month: "short",
-        day: "numeric",
-        hour: "numeric",
-        minute: "2-digit",
-        hour12: true
-      });
+      function createTimezoneBox(tz) {
+        const local = utcDate.toLocaleString("en-US", {
+          timeZone: tz.zone,
+          month: "short",
+          day: "numeric",
+          hour: "numeric",
+          minute: "2-digit",
+          hour12: true
+        });
 
-      const box = document.createElement("div");
-      box.className = "tz-box";
+        const box = document.createElement("div");
+        box.className = "tz-box";
 
-      const flagImg = document.createElement("img");
-      flagImg.src = `https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/${tz.code}.png`;
-      flagImg.alt = tz.label;
-      flagImg.loading = "lazy";
+        const flagImg = document.createElement("img");
+        flagImg.src = `https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/${tz.code}.png`;
+        flagImg.alt = tz.label;
+        flagImg.loading = "lazy";
 
-      const text = document.createElement("span");
-      // dash separator and bold timezone label
-      text.innerHTML = `${local} &ndash; <span class="tz-label">${tz.label}</span>`;
+        const text = document.createElement("span");
+        text.innerHTML = `${local} &ndash; <span class="tz-label">${tz.label}</span>`;
 
-      box.appendChild(flagImg);
-      box.appendChild(text);
-      return box;
-    }
+        box.appendChild(flagImg);
+        box.appendChild(text);
+        return box;
+      }
 
-    leftZones.forEach(tz => leftContainer.appendChild(createTimezoneBox(tz)));
-    rightZones.forEach(tz => rightContainer.appendChild(createTimezoneBox(tz)));
-  })();
+      leftZones.forEach(tz => leftContainer.appendChild(createTimezoneBox(tz)));
+      rightZones.forEach(tz => rightContainer.appendChild(createTimezoneBox(tz)));
+    })();
   </script>
 </body>
 </html>
