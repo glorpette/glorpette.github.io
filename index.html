@@ -217,6 +217,10 @@
       display: none;
     }
 
+    .container.hide-seconds .seconds-box {
+      display: none;
+    }
+
     .tz-left { left: -270px; align-items: flex-end; }
     .tz-right { right: -283px; align-items: flex-start; }
 
@@ -267,7 +271,7 @@
           <div class="time-box day-box"><span id="days1" class="time-value">00</span><span class="time-label">Days</span></div>
           <div class="time-box"><span id="hours1" class="time-value">00</span><span class="time-label">Hours</span></div>
           <div class="time-box"><span id="minutes1" class="time-value">00</span><span class="time-label">Minutes</span></div>
-          <div class="time-box"><span id="seconds1" class="time-value">00</span><span class="time-label">Seconds</span></div>
+          <div class="time-box seconds-box"><span id="seconds1" class="time-value">00</span><span class="time-label">Seconds</span></div>
         </div>
         <div id="end1" class="end-message" style="display:none;">Modern Warfare 4 has launched in New Zealand!</div>
 
@@ -279,7 +283,7 @@
             <div class="time-box day-box"><span id="days2" class="time-value">00</span><span class="time-label">Days</span></div>
             <div class="time-box"><span id="hours2" class="time-value">00</span><span class="time-label">Hours</span></div>
             <div class="time-box"><span id="minutes2" class="time-value">00</span><span class="time-label">Minutes</span></div>
-            <div class="time-box"><span id="seconds2" class="time-value">00</span><span class="time-label">Seconds</span></div>
+            <div class="time-box seconds-box"><span id="seconds2" class="time-value">00</span><span class="time-label">Seconds</span></div>
           </div>
           <div id="end2" class="end-message" style="display:none;">Modern Warfare 4 is available worldwide!</div>
 
@@ -371,6 +375,10 @@
         document.getElementById('tz-left'),
         document.getElementById('tz-right')
       ];
+      const countdowns = [
+        document.getElementById('countdown1'),
+        document.getElementById('countdown2')
+      ];
 
       container.classList.remove('hide-timezones');
       const panelsFit = window.innerWidth > 950 && timezonePanels.every(panel => {
@@ -380,6 +388,15 @@
       });
 
       container.classList.toggle('hide-timezones', !panelsFit);
+
+      container.classList.remove('hide-seconds');
+      const countdownsFit = countdowns.every(countdown => {
+        const bounds = countdown.getBoundingClientRect();
+        return bounds.left >= 0 && bounds.right <= window.innerWidth &&
+          bounds.top >= 0 && bounds.bottom <= window.innerHeight;
+      });
+
+      container.classList.toggle('hide-seconds', !countdownsFit);
     }
 
     window.addEventListener('resize', adjustScale);
