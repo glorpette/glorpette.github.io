@@ -213,6 +213,10 @@
       z-index: 3;
     }
 
+    .container.hide-timezones .tz-floating {
+      display: none;
+    }
+
     .tz-left { left: -270px; align-items: flex-end; }
     .tz-right { right: -283px; align-items: flex-start; }
 
@@ -359,6 +363,23 @@
       container.style.transition = 'transform 0.45s ease, opacity 0.45s ease';
       container.style.transformOrigin = 'center center';
       container.style.transform = `scale(${scale})`;
+      updateTimezoneVisibility();
+    }
+
+    function updateTimezoneVisibility() {
+      const timezonePanels = [
+        document.getElementById('tz-left'),
+        document.getElementById('tz-right')
+      ];
+
+      container.classList.remove('hide-timezones');
+      const panelsFit = window.innerWidth > 950 && timezonePanels.every(panel => {
+        const bounds = panel.getBoundingClientRect();
+        return bounds.left >= 0 && bounds.right <= window.innerWidth &&
+          bounds.top >= 0 && bounds.bottom <= window.innerHeight;
+      });
+
+      container.classList.toggle('hide-timezones', !panelsFit);
     }
 
     window.addEventListener('resize', adjustScale);
