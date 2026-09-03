@@ -260,6 +260,7 @@
         <h1>Modern Warfare 4 New Zealand Launch</h1>
         <p><b>October 23, 12:00am NZDT</b> – Console & Xbox PC App</p>
         <div id="countdown1" class="countdown">
+          <div class="time-box day-box"><span id="days1" class="time-value">00</span><span class="time-label">Days</span></div>
           <div class="time-box"><span id="hours1" class="time-value">00</span><span class="time-label">Hours</span></div>
           <div class="time-box"><span id="minutes1" class="time-value">00</span><span class="time-label">Minutes</span></div>
           <div class="time-box"><span id="seconds1" class="time-value">00</span><span class="time-label">Seconds</span></div>
@@ -271,6 +272,7 @@
 
         <div class="pc-launch-wrapper">
           <div id="countdown2" class="countdown horizontal-countdown">
+            <div class="time-box day-box"><span id="days2" class="time-value">00</span><span class="time-label">Days</span></div>
             <div class="time-box"><span id="hours2" class="time-value">00</span><span class="time-label">Hours</span></div>
             <div class="time-box"><span id="minutes2" class="time-value">00</span><span class="time-label">Minutes</span></div>
             <div class="time-box"><span id="seconds2" class="time-value">00</span><span class="time-label">Seconds</span></div>
@@ -292,7 +294,9 @@
     const secondTargetLocal = new Date('2026-10-23T05:00:00Z').getTime();
 
     function startCountdown(target, ids) {
-      const timer = setInterval(() => {
+      const dayLimit = 14 * 24 * 60 * 60 * 1000;
+      let timer;
+      const update = () => {
         const now = new Date().getTime();
         const distance = target - now;
 
@@ -303,23 +307,33 @@
           return;
         }
 
+        const showDays = distance >= dayLimit;
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
         const totalHours = Math.floor(distance / (1000 * 60 * 60));
+        const hours = showDays ? Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)) : totalHours;
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        document.getElementById(ids.hours).textContent = String(totalHours).padStart(2, '0');
+        document.getElementById(ids.days).parentElement.style.display = showDays ? '' : 'none';
+        document.getElementById(ids.days).textContent = String(days).padStart(2, '0');
+        document.getElementById(ids.hours).textContent = String(hours).padStart(2, '0');
         document.getElementById(ids.minutes).textContent = String(minutes).padStart(2, '0');
         document.getElementById(ids.seconds).textContent = String(seconds).padStart(2, '0');
-      }, 1000);
+      };
+
+      update();
+      if (target > Date.now()) {
+        timer = setInterval(update, 1000);
+      }
     }
 
     startCountdown(firstTargetUTC, {
-      hours: 'hours1', minutes: 'minutes1', seconds: 'seconds1',
+      days: 'days1', hours: 'hours1', minutes: 'minutes1', seconds: 'seconds1',
       end: 'end1', block: 'countdown1'
     });
 
     startCountdown(secondTargetLocal, {
-      hours: 'hours2', minutes: 'minutes2', seconds: 'seconds2',
+      days: 'days2', hours: 'hours2', minutes: 'minutes2', seconds: 'seconds2',
       end: 'end2', block: 'countdown2'
     });
 
