@@ -2,459 +2,1068 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Modern Warfare 4 Launch Countdown</title>
-  <link rel="icon" type="image/png" href="rex_logo.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#090c0e" />
+  <meta name="description" content="Countdowns for the Modern Warfare 4 campaign early access and launch." />
+  <title>Modern Warfare 4 — Launch Clock</title>
+  <link rel="icon" type="image/png" href="favicon.png" sizes="64x64" />
 
-  <meta property="og:title" content="Modern Warfare 4 Launch Countdown" />
+  <meta property="og:title" content="Modern Warfare 4 — Launch Clock" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://mw4.mxr.lol" />
   <meta property="og:image" content="https://mw4.mxr.lol/rex_logo.png" />
-  <meta property="og:description" content="🎫 Boarding the plane to New Zealand!" />
-  <meta name="theme-color" content="#FFD000">
-  
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <meta property="og:description" content="Campaign early access and global launch countdowns." />
 
-  <!-- Hitmarker Fonts for countdown only -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
   <style>
     @font-face {
-      font-family: 'HitmarkerNormal';
-      src: url('HitmarkerNormal-Regular.woff2') format('woff2');
-      font-weight: normal;
+      font-family: "HitmarkerNormal";
+      src: url("HitmarkerNormal-Regular.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 400;
       font-display: swap;
     }
 
     @font-face {
-      font-family: 'HitmarkerNormalMedium';
-      src: url('HitmarkerNormal-Medium.woff2') format('woff2');
-      font-weight: normal;
+      font-family: "HitmarkerNormalMedium";
+      src: url("HitmarkerNormal-Medium.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 500;
       font-display: swap;
     }
 
-    html, body {
+    :root {
+      color-scheme: dark;
+      --background: #090c0e;
+      --panel: rgba(18, 23, 26, 0.92);
+      --panel-raised: #151b1e;
+      --line: rgba(221, 230, 233, 0.11);
+      --line-strong: rgba(255, 208, 0, 0.32);
+      --text: #f4f5f2;
+      --muted: #a1abb0;
+      --quiet: #77838a;
+      --yellow: #ffd000;
+      --orange: #ff7900;
+      --font-body: "Montserrat", Arial, sans-serif;
+      --font-display: "HitmarkerNormal", "Montserrat", sans-serif;
+      --font-digits: "HitmarkerNormalMedium", "HitmarkerNormal", sans-serif;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-width: 320px;
+      min-height: 100%;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      min-height: 100svh;
       margin: 0;
-      padding: 0;
-      height: 100%;
-      width: 100%;
-      overflow: hidden;
-      font-family: 'Montserrat', sans-serif;
-      background-color: #0d1117;
-      color: #ffffff;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      overflow-x: hidden;
+      background: var(--background);
+      color: var(--text);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
 
     body::before,
     body::after {
+      position: fixed;
+      z-index: -1;
+      pointer-events: none;
       content: "";
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(120px);
-      opacity: 0.9;
-      animation: pulseGlow 6s ease-in-out infinite alternate;
-      z-index: 0;
     }
 
     body::before {
-      top: -15vw;
-      left: -15vw;
-      width: 35vw;
-      height: 35vw;
-      background: radial-gradient(circle, rgba(255,208,0,1) 0%, transparent 50%);
+      inset: 0;
+      background:
+        radial-gradient(ellipse 42rem 28rem at 8% 0%, rgba(255, 208, 0, 0.09), transparent 70%),
+        radial-gradient(ellipse 36rem 26rem at 100% 68%, rgba(255, 121, 0, 0.055), transparent 72%);
     }
 
     body::after {
-      bottom: -15vw;
-      right: -15vw;
-      width: 35vw;
-      height: 35vw;
-      background: radial-gradient(circle, rgba(255,255,255,0.75) 0%, transparent 50%);
-      animation-delay: 3s;
-    }
-
-    @keyframes pulseGlow {
-      0% { opacity: 0.6; transform: scale(1); }
-      100% { opacity: 1; transform: scale(1.2); }
-    }
-
-    .overlay {
-      position: absolute;
       inset: 0;
       background-image:
-        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-      background-size: 40px 40px;
+        linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to bottom, black, transparent 92%);
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--yellow);
+      outline-offset: 4px;
+    }
+
+    .skip-link {
+      position: fixed;
+      z-index: 5;
+      top: 0.75rem;
+      left: 0.75rem;
+      padding: 0.75rem 1rem;
+      transform: translateY(-160%);
+      border-radius: 8px;
+      background: var(--yellow);
+      color: #111;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .skip-link:focus {
+      transform: translateY(0);
+    }
+
+    .page-shell {
+      position: relative;
       z-index: 1;
-      pointer-events: none;
-    }
-
-    .container-wrapper {
-      width: 100%;
-      height: 100dvh;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      position: relative;
-      z-index: 2;
-    }
-
-    .container {
-      position: relative;
-      max-width: 900px;
-      padding: 2rem 1rem;
-      display: flex;
+      width: min(100% - 2rem, 1000px);
+      min-height: 100vh;
+      min-height: 100svh;
       flex-direction: column;
-      justify-content: center;
+      margin-inline: auto;
+      padding-block: clamp(1.1rem, 3vw, 2rem) 1.5rem;
+    }
+
+    .masthead {
+      display: flex;
+      min-height: 2.5rem;
       align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      row-gap: 0.65rem;
+    }
+
+    @keyframes reveal-from-top {
+      from {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .masthead,
+    .hero,
+    .release-card,
+    .footer {
+      animation: reveal-from-top 420ms cubic-bezier(0.22, 0.61, 0.36, 1) backwards;
+    }
+
+    .hero {
+      animation-delay: 65ms;
+    }
+
+    .release-card:nth-child(1) {
+      animation-delay: 135ms;
+    }
+
+    .release-card:nth-child(2) {
+      animation-delay: 210ms;
+    }
+
+    .release-card:nth-child(3) {
+      animation-delay: 285ms;
+    }
+
+    .footer {
+      animation-delay: 360ms;
+    }
+
+    .brand-lockup {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      color: #e9ece8;
+      font-family: var(--font-display);
+      font-size: 0.82rem;
+      letter-spacing: 0.09em;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 4.25rem;
+      height: 2.5rem;
+      place-items: center;
+      border: 1px solid rgba(255, 208, 0, 0.42);
+      border-radius: 7px;
+      background: rgba(255, 208, 0, 0.08);
+    }
+
+    .brand-mark img {
+      display: block;
+      width: 3.7rem;
+      height: 1.55rem;
+      object-fit: contain;
+    }
+
+    .edition-label,
+    .eyebrow,
+    .release-index,
+    .status-chip,
+    .local-time-label,
+    .time-label,
+    .footer-note {
+      font-family: var(--font-display);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .edition-label {
+      color: var(--quiet);
+      font-size: 0.68rem;
+      text-align: right;
+    }
+
+    .hero {
+      max-width: 700px;
+      margin: clamp(2.5rem, 7vw, 5rem) auto clamp(2rem, 5vw, 3.5rem);
       text-align: center;
-      box-sizing: border-box;
-      transform-origin: center center;
-      transition: transform 0.4s ease;
     }
 
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      color: #FFD000;
-      text-shadow: 0 0 10px rgba(233,150,21,0.5);
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin: 0 0 1rem;
+      color: var(--yellow);
+      font-size: 0.7rem;
     }
 
-    p {
-      color: #b0b8c1;
-      margin-bottom: 2rem;
-      font-size: 1rem;
-      max-width: 90%;
+    .eyebrow::before {
+      width: 1.45rem;
+      height: 1px;
+      background: currentColor;
+      content: "";
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2.15rem, 6.6vw, 4.4rem);
+      font-weight: 600;
+      letter-spacing: -0.065em;
+      line-height: 1.04;
+    }
+
+    .hero h1 span {
+      color: var(--yellow);
+    }
+
+    .hero-copy {
+      max-width: 35rem;
+      margin: 1.1rem auto 0;
+      color: var(--muted);
+      font-size: clamp(0.88rem, 1.7vw, 1rem);
+      line-height: 1.7;
+    }
+
+    .release-list {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .release-card {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(1.15rem, 3vw, 1.8rem);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(23, 29, 32, 0.97), var(--panel));
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.2);
+      transition: border-color 180ms ease, transform 180ms ease, background-color 180ms ease;
+    }
+
+    .release-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(221, 230, 233, 0.2);
+    }
+
+    .release-card--next {
+      border-color: var(--line-strong);
+      background: linear-gradient(120deg, rgba(255, 208, 0, 0.055), transparent 52%), var(--panel);
+    }
+
+    .release-card--next::before {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 3px;
+      background: linear-gradient(to bottom, var(--yellow), rgba(255, 121, 0, 0.35));
+      content: "";
+    }
+
+    .release-copy {
+      min-width: 0;
+    }
+
+    .release-kicker {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.55rem;
+      margin-bottom: 0.65rem;
+    }
+
+    .release-index {
+      color: var(--quiet);
+      font-size: 0.7rem;
+    }
+
+    .status-chip {
+      display: inline-flex;
+      min-height: 1.65rem;
+      align-items: center;
+      padding: 0.25rem 0.55rem;
+      border: 1px solid rgba(255, 208, 0, 0.25);
+      border-radius: 4px;
+      background: rgba(255, 208, 0, 0.07);
+      color: #ffe26b;
+      font-size: 0.7rem;
+    }
+
+    .status-chip--quiet {
+      border-color: var(--line);
+      background: rgba(255, 255, 255, 0.035);
+      color: #c1c8c8;
+    }
+
+    .release-copy h2 {
+      margin: 0;
+      font-size: clamp(1.18rem, 2.5vw, 1.5rem);
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      line-height: 1.25;
+    }
+
+    .release-description {
+      margin: 0.45rem 0 0;
+      color: var(--muted);
+      font-size: 0.96rem;
+      line-height: 1.65;
+    }
+
+    .release-date {
+      margin: 0.9rem 0 0;
+      color: #e5e8e5;
+      font-family: var(--font-display);
+      font-size: 0.92rem;
+      letter-spacing: 0.015em;
+    }
+
+    .release-date time {
+      color: var(--yellow);
+    }
+
+    .local-time {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.35rem 0.55rem;
+      margin: 0.55rem 0 0;
+      color: var(--quiet);
+      font-size: 0.84rem;
+      line-height: 1.5;
+    }
+
+    .local-time-label {
+      font-size: 0.7rem;
+    }
+
+    .local-time time {
+      color: #c1c8c8;
+    }
+
+    .clock-area {
+      min-width: 0;
+      margin-top: 1.35rem;
     }
 
     .countdown {
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-      margin-bottom: 3rem;
-      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: clamp(0.4rem, 1.2vw, 0.7rem);
     }
 
     .time-box {
-      font-family: 'HitmarkerNormal', sans-serif;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-top: 2px solid #ffffff;
-      border-radius: 12px;
-      padding: 1rem 1.5rem;
-      min-width: 90px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      min-width: 0;
+      min-height: clamp(6rem, 11vw, 7rem);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0.7rem 0.35rem 0.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.075);
+      border-radius: 10px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.018));
+      text-align: center;
     }
 
     .time-value {
-      font-family: 'HitmarkerNormalMedium', sans-serif;
-      font-size: 2.5rem;
-      font-weight: normal;
       display: block;
-      color: #ffffff;
-      text-shadow: 0 0 6px rgba(255,255,255,0.4);
+      color: #f7f7f2;
+      font-family: var(--font-digits);
+      font-size: clamp(2.5rem, 6vw, 3.5rem);
+      font-weight: 500;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.045em;
+      line-height: 1;
     }
 
     .time-label {
-      font-family: 'HitmarkerNormal', sans-serif;
-      font-size: 0.9rem;
-      color: #ffd000;
+      display: block;
+      margin-top: 0.5rem;
+      color: var(--yellow);
+      font-size: clamp(0.75rem, 1vw, 0.82rem);
+      line-height: 1.2;
     }
 
-    .end-message {
-      font-size: 1.4rem;
-      margin-top: 1.5rem;
-      color: #FFD000;
-      text-shadow: 0 0 8px rgba(233,150,21,0.5);
+    .complete-message {
+      margin: 0;
+      padding: 1.05rem 1rem;
+      border: 1px solid rgba(255, 208, 0, 0.22);
+      border-radius: 10px;
+      background: rgba(255, 208, 0, 0.055);
+      color: var(--yellow);
+      font-family: var(--font-display);
+      font-size: 0.92rem;
+      line-height: 1.5;
+      text-align: center;
     }
 
-    .image-container {
-      margin-top: 2rem;
+    .campaign-note {
+      margin: 0.75rem 0 0;
+      color: #c0ae6d;
+      font-size: 0.82rem;
+      line-height: 1.65;
     }
 
-    .image-container img {
-      width: 160px;
+    .pc-release-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1.25rem;
+      margin-top: 1.35rem;
+    }
+
+    .pc-release-grid .clock-area {
+      margin-top: 0;
+    }
+
+    .world-times {
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.14);
+    }
+
+    .world-times summary {
+      display: flex;
+      min-height: 3.5rem;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.9rem 1rem;
+      color: #e5e8e5;
+      cursor: pointer;
+      font-family: var(--font-display);
+      font-size: 0.88rem;
+      letter-spacing: 0.045em;
+      list-style: none;
+    }
+
+    .world-times summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .world-times summary::after {
+      flex: 0 0 auto;
+      color: var(--yellow);
+      content: "+";
+      font-family: var(--font-body);
+      font-size: 1rem;
+      transition: transform 180ms ease;
+    }
+
+    .world-times[open] .timezone-region {
+      animation: reveal-from-top 360ms cubic-bezier(0.22, 0.61, 0.36, 1) backwards;
+      animation-delay: var(--region-stagger, 0ms);
+    }
+
+    .world-times.is-initial-reveal[open] .timezone-region {
+      animation-delay: calc(500ms + var(--region-stagger, 0ms));
+    }
+
+    .world-times.is-closing[open] summary::after {
+      transform: rotate(0deg);
+    }
+
+    .world-times[open] summary::after {
+      transform: rotate(45deg);
+    }
+
+    .timezone-regions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.8rem;
+      overflow: hidden;
+      margin: 0;
+      padding: 0.9rem 1rem 1rem;
+      border-top: 1px solid var(--line);
+      transition: max-height 260ms ease, opacity 220ms ease, transform 220ms ease;
+    }
+
+    .timezone-regions.is-closing {
+      max-height: 0 !important;
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+
+    .timezone-region {
+      min-width: 0;
+      padding: 0.8rem;
+      border: 1px solid rgba(221, 230, 233, 0.08);
+      border-radius: 9px;
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .timezone-region h3 {
+      margin: 0 0 0.45rem;
+      color: var(--yellow);
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      letter-spacing: 0.09em;
+      line-height: 1.4;
+      text-transform: uppercase;
+    }
+
+    .timezone-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .timezone-grid li {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      min-width: 0;
+      gap: 0.18rem;
+      padding: 0.45rem 0.2rem;
+      border-bottom: 1px solid rgba(221, 230, 233, 0.07);
+    }
+
+    .timezone-place {
+      display: flex;
+      min-width: 0;
+      align-items: center;
+      gap: 0.55rem;
+    }
+
+    .country-flag {
+      display: block;
+      width: 1.5rem;
+      height: 1rem;
+      flex: 0 0 auto;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+      object-fit: cover;
+    }
+
+    .timezone-city {
+      color: var(--muted);
+      font-size: 0.86rem;
+      line-height: 1.4;
+    }
+
+    .timezone-time {
+      color: #e6e9e5;
+      font-family: var(--font-display);
+      font-size: 0.94rem;
+      line-height: 1.5;
+    }
+
+    .timezone-time time {
+      font-variant-numeric: tabular-nums;
+    }
+
+    .timezone-zone {
+      color: var(--yellow);
+      font-weight: 600;
+    }
+
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      margin-top: auto;
+      padding-top: 2.4rem;
+    }
+
+    .footer-copy {
+      color: var(--quiet);
+      font-size: 0.76rem;
+      line-height: 1.6;
+    }
+
+    .footer-copy p {
+      margin: 0;
+    }
+
+    .footer-note {
+      color: #a9b0ad;
+      font-size: 0.6rem;
+    }
+
+    .footer-logo {
+      display: block;
+      width: clamp(6.5rem, 20vw, 10rem);
       height: auto;
-      opacity: 0.9;
+      opacity: 0.78;
       user-select: none;
       pointer-events: none;
     }
 
-    .horizontal-countdown {
-      flex-direction: row !important;
-      justify-content: center;
-      align-items: center;
-      gap: 1.5rem;
-      flex-wrap: nowrap !important;
+    .noscript-note {
+      margin-top: 1rem;
+      color: var(--muted);
+      font-size: 0.8rem;
+      text-align: center;
     }
 
-    .pc-launch-wrapper {
-      position: relative;
-      width: 100%;
-      max-width: 1100px;
-      margin: 0 auto 3rem auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    @media (max-width: 700px) {
+      .page-shell {
+        width: min(100% - 1.25rem, 34rem);
+      }
+
+      .hero {
+        margin-top: clamp(2.4rem, 10vw, 4rem);
+        margin-bottom: 1.75rem;
+      }
+
+      .release-card {
+        border-radius: 13px;
+      }
+
+      .pc-release-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.8rem;
+      }
+
+      .timezone-regions {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.6rem;
+      }
+
+      .footer {
+        padding-top: 2rem;
+      }
     }
 
-    .tz-floating {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      z-index: 3;
+    @media (max-width: 390px) {
+      .page-shell {
+        width: min(100% - 1rem, 34rem);
+      }
+
+      .release-card {
+        padding: 1rem 0.85rem;
+      }
+
+      .countdown {
+        gap: 0.4rem;
+      }
+
+      .time-box {
+        min-height: 4.7rem;
+      }
+
+      .time-value {
+        font-size: clamp(1.65rem, 8vw, 2rem);
+      }
+
+      .time-label {
+        margin-top: 0.38rem;
+        font-size: 0.75rem;
+        letter-spacing: 0.07em;
+      }
     }
 
-    .container.hide-timezones .tz-floating {
-      display: none;
+    @media (max-width: 340px) {
+      .countdown {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .time-box {
+        min-height: 4.4rem;
+      }
+
+      .time-value {
+        font-size: 2rem;
+      }
+
+      .edition-label {
+        font-size: 0.58rem;
+      }
     }
 
-    .container.hide-seconds .seconds-box {
-      display: none;
-    }
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+      }
 
-    .tz-left { left: -270px; align-items: flex-end; }
-    .tz-right { right: -283px; align-items: flex-start; }
+      .masthead,
+      .hero,
+      .release-card,
+      .footer {
+        animation: none !important;
+        opacity: 1;
+        transform: none;
+      }
 
-    .tz-box {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-top: 2px solid #ffffff;
-      border-radius: 12px;
-      padding: 0.7rem 1rem;
-      font-size: 1.05rem;
-      color: #e0e4ea;
-      white-space: nowrap;
-      text-shadow: 0 0 9px rgba(255,255,255,0.6);
-      box-shadow: 0 0 14px rgba(255,255,255,0.25);
-    }
-
-    .tz-box img {
-      width: 22px;
-      height: 22px;
-    }
-
-    .tz-label {
-      font-weight: 700;
-      color: #ffffff;
-    }
-
-    @media (max-width: 950px) {
-      h1 { font-size: 1.5rem; }
-      p { font-size: 0.9rem; }
-      .time-value { font-size: 2rem; }
-      .countdown { gap: 1rem; margin-bottom: 2rem; }
-      .image-container img { width: 120px; }
-      .tz-floating { display: none; }
+      .world-times[open] .timezone-region {
+        animation: none !important;
+        opacity: 1;
+        transform: none;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="overlay"></div>
+  <a class="skip-link" href="#main-content">Skip to countdowns</a>
 
-  <div class="container-wrapper">
-    <div class="container" id="scalable-container">
-        <h1>Modern Warfare 4 New Zealand Launch</h1>
-        <p><b>October 23, 12:00am NZDT</b> – Console & Xbox PC App</p>
-        <div id="countdown1" class="countdown">
-          <div class="time-box day-box"><span id="days1" class="time-value">00</span><span class="time-label">Days</span></div>
-          <div class="time-box"><span id="hours1" class="time-value">00</span><span class="time-label">Hours</span></div>
-          <div class="time-box"><span id="minutes1" class="time-value">00</span><span class="time-label">Minutes</span></div>
-          <div class="time-box seconds-box"><span id="seconds1" class="time-value">00</span><span class="time-label">Seconds</span></div>
-        </div>
-        <div id="end1" class="end-message" style="display:none;">Modern Warfare 4 has launched in New Zealand!</div>
-
-        <h1>Modern Warfare 4 PC Launch</h1>
-        <p><b>October 23, 5:00am UTC</b> – Global PC Release</p>
-
-        <div class="pc-launch-wrapper">
-          <div id="countdown2" class="countdown horizontal-countdown">
-            <div class="time-box day-box"><span id="days2" class="time-value">00</span><span class="time-label">Days</span></div>
-            <div class="time-box"><span id="hours2" class="time-value">00</span><span class="time-label">Hours</span></div>
-            <div class="time-box"><span id="minutes2" class="time-value">00</span><span class="time-label">Minutes</span></div>
-            <div class="time-box seconds-box"><span id="seconds2" class="time-value">00</span><span class="time-label">Seconds</span></div>
-          </div>
-          <div id="end2" class="end-message" style="display:none;">Modern Warfare 4 is available worldwide!</div>
-
-          <div class="tz-floating tz-left" id="tz-left"></div>
-          <div class="tz-floating tz-right" id="tz-right"></div>
-        </div>
-
-        <div class="image-container">
-          <img src="rex_logo.png" alt="Call of Duty: Modern Warfare 4 - Logo">
-        </div>
+  <main class="page-shell" id="main-content">
+    <div class="masthead" aria-label="Modern Warfare 4 launch clock">
+      <div class="brand-lockup">
+        <span class="brand-mark" aria-hidden="true"><img src="rex_logo.png" alt="" width="720" height="297" /></span>
+        <span>LAUNCH CONTROL</span>
+      </div>
+      <span class="edition-label">2026 // MISSION TIMELINE</span>
     </div>
-  </div>
+
+    <header class="hero">
+      <p class="eyebrow">Your next deployment</p>
+      <h1>Modern Warfare 4<br /><span>launch clock</span></h1>
+      <p class="hero-copy">Every milestone, one place. Set your sights on the next drop.</p>
+    </header>
+
+    <section class="release-list" aria-label="Release countdowns">
+      <article class="release-card release-card--next" data-countdown data-target="2026-10-16T00:00:00Z" data-complete="Campaign Early Access is underway.">
+        <div class="release-copy">
+          <div class="release-kicker">
+            <span class="release-index">01 // NEXT MILESTONE</span>
+            <span class="status-chip">Time unconfirmed</span>
+          </div>
+          <h2>Campaign Early Access</h2>
+          <p class="release-description">Get an early start on the campaign.</p>
+          <p class="release-date"><time datetime="2026-10-16T00:00:00Z">16 October 2026 · 00:00 UTC*</time></p>
+          <p class="campaign-note">*Midnight UTC is a placeholder until the official start time is announced.</p>
+          <p class="local-time" hidden><span class="local-time-label">Your local time</span><time data-local-time datetime="2026-10-16T00:00:00Z">16 Oct 2026, 12:00 AM UTC</time></p>
+        </div>
+        <div class="clock-area">
+          <div class="countdown" role="timer" aria-label="Campaign Early Access countdown">
+            <div class="time-box"><span class="time-value" data-unit="days">00</span><span class="time-label">Days</span></div>
+            <div class="time-box"><span class="time-value" data-unit="hours">00</span><span class="time-label">Hours</span></div>
+            <div class="time-box"><span class="time-value" data-unit="minutes">00</span><span class="time-label">Minutes</span></div>
+            <div class="time-box"><span class="time-value" data-unit="seconds">00</span><span class="time-label">Seconds</span></div>
+          </div>
+          <p class="complete-message" role="status" hidden></p>
+        </div>
+      </article>
+
+      <article class="release-card" data-countdown data-target="2026-10-22T11:00:00Z" data-complete="The New Zealand release window has begun.">
+        <div class="release-copy">
+          <div class="release-kicker">
+            <span class="release-index">02 // CONSOLE + XBOX PC APP</span>
+            <span class="status-chip status-chip--quiet">New Zealand</span>
+          </div>
+          <h2>New Zealand launch</h2>
+          <p class="release-description">Console and Xbox PC App release.</p>
+          <p class="release-date"><time datetime="2026-10-22T11:00:00Z">23 October 2026 · 12:00 AM NZDT</time></p>
+          <p class="local-time" hidden><span class="local-time-label">Your local time</span><time data-local-time datetime="2026-10-22T11:00:00Z">23 Oct 2026, 12:00 AM NZDT</time></p>
+        </div>
+        <div class="clock-area">
+          <div class="countdown" role="timer" aria-label="New Zealand launch countdown">
+            <div class="time-box"><span class="time-value" data-unit="days">00</span><span class="time-label">Days</span></div>
+            <div class="time-box"><span class="time-value" data-unit="hours">00</span><span class="time-label">Hours</span></div>
+            <div class="time-box"><span class="time-value" data-unit="minutes">00</span><span class="time-label">Minutes</span></div>
+            <div class="time-box"><span class="time-value" data-unit="seconds">00</span><span class="time-label">Seconds</span></div>
+          </div>
+          <p class="complete-message" role="status" hidden></p>
+        </div>
+      </article>
+
+      <article class="release-card release-card--pc" data-countdown data-target="2026-10-23T05:00:00Z" data-complete="Modern Warfare 4 is available worldwide on PC.">
+        <div class="release-copy">
+          <div class="release-kicker">
+            <span class="release-index">03 // WORLDWIDE</span>
+            <span class="status-chip status-chip--quiet">PC launch</span>
+          </div>
+          <h2>Global PC launch</h2>
+          <p class="release-description">The worldwide PC release.</p>
+          <p class="release-date"><time datetime="2026-10-23T05:00:00Z">23 October 2026 · 05:00 UTC</time></p>
+          <p class="local-time" hidden><span class="local-time-label">Your local time</span><time data-local-time datetime="2026-10-23T05:00:00Z">23 Oct 2026, 5:00 AM UTC</time></p>
+        </div>
+        <div class="pc-release-grid">
+          <div class="clock-area">
+            <div class="countdown" role="timer" aria-label="Global PC launch countdown">
+              <div class="time-box"><span class="time-value" data-unit="days">00</span><span class="time-label">Days</span></div>
+              <div class="time-box"><span class="time-value" data-unit="hours">00</span><span class="time-label">Hours</span></div>
+              <div class="time-box"><span class="time-value" data-unit="minutes">00</span><span class="time-label">Minutes</span></div>
+              <div class="time-box"><span class="time-value" data-unit="seconds">00</span><span class="time-label">Seconds</span></div>
+            </div>
+            <p class="complete-message" role="status" hidden></p>
+          </div>
+          <details class="world-times is-initial-reveal" open>
+            <summary aria-controls="global-release-timezones">Worldwide release times</summary>
+            <div class="timezone-regions" id="global-release-timezones">
+              <section class="timezone-region" aria-labelledby="timezone-americas">
+                <h3 id="timezone-americas">Americas</h3>
+                <ul class="timezone-grid">
+                  <li data-timezone="America/Los_Angeles"><div class="timezone-place"><img class="country-flag" src="flags/us.svg" alt="Flag of the United States" width="24" height="16" /><span class="timezone-city">Los Angeles</span></div><span class="timezone-time"><time datetime="2026-10-23T05:00:00Z">Oct 22, 10:00 PM <span class="timezone-zone">PDT</span></time></span></li>
+                  <li data-timezone="America/Denver"><div class="timezone-place"><img class="country-flag" src="flags/us.svg" alt="Flag of the United States" width="24" height="16" /><span class="timezone-city">Denver</span></div><span class="timezone-time"><time datetime="2026-10-23T05:00:00Z">Oct 22, 11:00 PM <span class="timezone-zone">MDT</span></time></span></li>
+                  <li data-timezone="America/Chicago"><div class="timezone-place"><img class="country-flag" src="flags/us.svg" alt="Flag of the United States" width="24" height="16" /><span class="timezone-city">Chicago</span></div><span class="timezone-time"><time datetime="2026-10-23T05:00:00Z">Oct 23, 12:00 AM <span class="timezone-zone">CDT</span></time></span></li>
+                  <li data-timezone="America/New_York"><div class="timezone-place"><img class="country-flag" src="flags/us.svg" alt="Flag of the United States" width="24" height="16" /><span class="timezone-city">New York</span></div><span class="timezone-time"><time datetime="2026-10-23T05:00:00Z">Oct 23, 1:00 AM <span class="timezone-zone">EDT</span></time></span></li>
+                </ul>
+              </section>
+              <section class="timezone-region" aria-labelledby="timezone-europe-africa">
+                <h3 id="timezone-europe-africa">Europe &amp; Africa</h3>
+                <ul class="timezone-grid">
+                  <li data-timezone="Europe/London"><div class="timezone-place"><img class="country-flag" src="flags/uk.svg" alt="Flag of the United Kingdom" width="24" height="16" /><span class="timezone-city">London</span></div><span class="timezone-time"><time datetime="2026-10-23T05:00:00Z">Oct 23, 6:00 AM <span class="timezone-zone">BST</span></time></span></li>
+                  <li data-timezone="Europe/Berlin"><div class="timezone-place"><img class="country-flag" src="flags/germany.svg" alt="Flag of Germany" width="24" height="16" /><span class="timezone-city">Berlin</span></div><span class="timezone-time"><time datetime="2026-10-23T05:00:00Z">Oct 23, 7:00 AM <span class="timezone-zone">CEST</span></time></span></li>
+                  <li data-timezone="Africa/Johannesburg"><div class="timezone-place"><img class="country-flag" src="flags/south-africa.svg" alt="Flag of South Africa" width="24" height="16" /><span class="timezone-city">Johannesburg</span></div><span class="timezone-time"><time datetime="2026-10-23T05:00:00Z">Oct 23, 7:00 AM <span class="timezone-zone">SAST</span></time></span></li>
+                </ul>
+              </section>
+              <section class="timezone-region" aria-labelledby="timezone-asia">
+                <h3 id="timezone-asia">Asia</h3>
+                <ul class="timezone-grid">
+                  <li data-timezone="Asia/Kolkata"><div class="timezone-place"><img class="country-flag" src="flags/india.svg" alt="Flag of India" width="24" height="16" /><span class="timezone-city">Mumbai</span></div><span class="timezone-time"><time datetime="2026-10-23T05:00:00Z">Oct 23, 10:30 AM <span class="timezone-zone">IST</span></time></span></li>
+                  <li data-timezone="Asia/Singapore"><div class="timezone-place"><img class="country-flag" src="flags/singapore.svg" alt="Flag of Singapore" width="24" height="16" /><span class="timezone-city">Singapore</span></div><span class="timezone-time"><time datetime="2026-10-23T05:00:00Z">Oct 23, 1:00 PM <span class="timezone-zone">SGT</span></time></span></li>
+                  <li data-timezone="Asia/Tokyo"><div class="timezone-place"><img class="country-flag" src="flags/japan.svg" alt="Flag of Japan" width="24" height="16" /><span class="timezone-city">Tokyo</span></div><span class="timezone-time"><time datetime="2026-10-23T05:00:00Z">Oct 23, 2:00 PM <span class="timezone-zone">JST</span></time></span></li>
+                </ul>
+              </section>
+              <section class="timezone-region" aria-labelledby="timezone-oceania">
+                <h3 id="timezone-oceania">Oceania</h3>
+                <ul class="timezone-grid">
+                  <li data-timezone="Australia/Sydney"><div class="timezone-place"><img class="country-flag" src="flags/australia.svg" alt="Flag of Australia" width="24" height="16" /><span class="timezone-city">Sydney</span></div><span class="timezone-time"><time datetime="2026-10-23T05:00:00Z">Oct 23, 4:00 PM <span class="timezone-zone">AEDT</span></time></span></li>
+                  <li data-timezone="Pacific/Auckland"><div class="timezone-place"><img class="country-flag" src="flags/new-zealand.svg" alt="Flag of New Zealand" width="24" height="16" /><span class="timezone-city">Auckland</span></div><span class="timezone-time"><time datetime="2026-10-23T05:00:00Z">Oct 23, 6:00 PM <span class="timezone-zone">NZDT</span></time></span></li>
+                </ul>
+              </section>
+            </div>
+          </details>
+        </div>
+      </article>
+    </section>
+
+    <noscript><p class="noscript-note">Enable JavaScript to run the countdown clocks. Release dates are shown above in UTC.</p></noscript>
+
+    <footer class="footer">
+      <div class="footer-copy">
+        <p class="footer-note">Stay frosty. See you at launch.</p>
+        <p>Release times are shown with their time zones.</p>
+        <p>This unofficial fan project is not affiliated with or endorsed by Activision Publishing, Inc.</p>
+      </div>
+      <img class="footer-logo" src="rex_logo.png" alt="Rex emblem" width="720" height="297" />
+    </footer>
+  </main>
 
   <script>
-    const firstTargetUTC = new Date('2026-10-22T11:00:00Z').getTime();
-    const secondTargetLocal = new Date('2026-10-23T05:00:00Z').getTime();
+    (() => {
+      const cards = [...document.querySelectorAll("[data-countdown]")].map((card) => {
+        const target = Date.parse(card.dataset.target);
+        const localTime = card.querySelector("[data-local-time]");
 
-    function startCountdown(target, ids) {
-      const dayLimit = 14 * 24 * 60 * 60 * 1000;
-      let timer;
-      const update = () => {
-        const now = new Date().getTime();
-        const distance = target - now;
-
-        if (distance <= 0) {
-          clearInterval(timer);
-          document.getElementById(ids.block).style.display = 'none';
-          document.getElementById(ids.end).style.display = 'block';
-          return;
+        if (localTime && Number.isFinite(target)) {
+          localTime.dateTime = new Date(target).toISOString();
+          localTime.textContent = new Intl.DateTimeFormat(undefined, {
+            weekday: "short",
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+            hour: "numeric",
+            minute: "2-digit",
+            timeZoneName: "short"
+          }).format(target);
+          localTime.closest(".local-time").hidden = false;
         }
 
-        const showDays = distance >= dayLimit;
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const totalHours = Math.floor(distance / (1000 * 60 * 60));
-        const hours = showDays ? Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)) : totalHours;
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        return {
+          card,
+          target,
+          clock: card.querySelector(".countdown"),
+          complete: card.querySelector(".complete-message"),
+          finished: false
+        };
+      });
 
-        document.getElementById(ids.days).parentElement.style.display = showDays ? '' : 'none';
-        document.getElementById(ids.days).textContent = String(days).padStart(2, '0');
-        document.getElementById(ids.hours).textContent = String(hours).padStart(2, '0');
-        document.getElementById(ids.minutes).textContent = String(minutes).padStart(2, '0');
-        document.getElementById(ids.seconds).textContent = String(seconds).padStart(2, '0');
+      const pcTarget = Date.parse("2026-10-23T05:00:00Z");
+      document.querySelectorAll("[data-timezone]").forEach((item) => {
+        const time = item.querySelector("time");
+        const date = new Date(pcTarget);
+        try {
+          time.dateTime = date.toISOString();
+          const parts = new Intl.DateTimeFormat("en-US", {
+            month: "short",
+            day: "numeric",
+            hour: "numeric",
+            minute: "2-digit",
+            timeZone: item.dataset.timezone,
+            timeZoneName: "short"
+          }).formatToParts(date);
+          time.replaceChildren(...parts.map((part) => {
+            if (part.type !== "timeZoneName") return document.createTextNode(part.value);
+            const zone = document.createElement("span");
+            zone.className = "timezone-zone";
+            zone.textContent = part.value;
+            return zone;
+          }));
+        } catch (error) {
+          item.hidden = true;
+        }
+      });
+
+      const worldTimes = document.querySelector(".world-times");
+      const wideLayout = window.matchMedia("(min-width: 701px)");
+      let resetWorldTimesCloseAnimation = () => {};
+      if (worldTimes) {
+        const timezoneRegions = worldTimes.querySelector(".timezone-regions");
+        let closeFallback = null;
+        let transitionHandler = null;
+
+        const clearCloseAnimation = () => {
+          if (closeFallback !== null) window.clearTimeout(closeFallback);
+          if (transitionHandler) {
+            timezoneRegions.removeEventListener("transitionend", transitionHandler);
+          }
+          closeFallback = null;
+          transitionHandler = null;
+          worldTimes.classList.remove("is-closing");
+          timezoneRegions.classList.remove("is-closing");
+          timezoneRegions.style.removeProperty("max-height");
+        };
+        resetWorldTimesCloseAnimation = clearCloseAnimation;
+
+        const finishClosing = () => {
+          worldTimes.open = false;
+          clearCloseAnimation();
+        };
+
+        worldTimes.querySelectorAll(".timezone-region").forEach((region, index) => {
+          region.style.setProperty("--region-stagger", `${index * 65}ms`);
+        });
+        worldTimes.addEventListener("click", (event) => {
+          const summary = event.target instanceof Element ? event.target.closest("summary") : null;
+          if (!worldTimes.open || !summary) return;
+
+          event.preventDefault();
+          if (timezoneRegions.classList.contains("is-closing")) return;
+          if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            finishClosing();
+            return;
+          }
+
+          clearCloseAnimation();
+          timezoneRegions.style.maxHeight = `${timezoneRegions.scrollHeight}px`;
+          void timezoneRegions.offsetHeight;
+
+          transitionHandler = (transitionEvent) => {
+            if (transitionEvent.target === timezoneRegions && transitionEvent.propertyName === "max-height") {
+              finishClosing();
+            }
+          };
+          timezoneRegions.addEventListener("transitionend", transitionHandler);
+          worldTimes.classList.add("is-closing");
+          timezoneRegions.classList.add("is-closing");
+          closeFallback = window.setTimeout(finishClosing, 300);
+        });
+        worldTimes.addEventListener("toggle", () => {
+          if (!worldTimes.open) {
+            clearCloseAnimation();
+            worldTimes.classList.remove("is-initial-reveal");
+          }
+        });
+      }
+      const syncWorldTimes = () => {
+        if (worldTimes) {
+          resetWorldTimesCloseAnimation();
+          worldTimes.open = wideLayout.matches;
+          if (!worldTimes.open) worldTimes.classList.remove("is-initial-reveal");
+        }
       };
-
-      update();
-      if (target > Date.now()) {
-        timer = setInterval(update, 1000);
-      }
-    }
-
-    startCountdown(firstTargetUTC, {
-      days: 'days1', hours: 'hours1', minutes: 'minutes1', seconds: 'seconds1',
-      end: 'end1', block: 'countdown1'
-    });
-
-    startCountdown(secondTargetLocal, {
-      days: 'days2', hours: 'hours2', minutes: 'minutes2', seconds: 'seconds2',
-      end: 'end2', block: 'countdown2'
-    });
-
-    const container = document.getElementById('scalable-container');
-    function adjustScale() {
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-      const desktopThreshold = 1000;
-      const baseWidthDesktop = 1200;
-      const baseHeightDesktop = 850;
-      const baseWidthMobile = 900;
-      const baseHeightMobile = 950;
-      let scale;
-
-      if (vw >= desktopThreshold) {
-        scale = Math.min(vw / baseWidthDesktop, vh / baseHeightDesktop);
-        scale = Math.max(scale, 1);
+      syncWorldTimes();
+      if (wideLayout.addEventListener) {
+        wideLayout.addEventListener("change", syncWorldTimes);
       } else {
-        scale = Math.min(vw / baseWidthMobile, vh / baseHeightMobile);
-        scale = Math.max(scale, 0.75);
+        wideLayout.addListener(syncWorldTimes);
       }
 
-      container.style.transition = 'transform 0.45s ease, opacity 0.45s ease';
-      container.style.transformOrigin = 'center center';
-      container.style.transform = `scale(${scale})`;
-      updateTimezoneVisibility();
-    }
+      const pad = (value) => String(value).padStart(2, "0");
+      const updateCountdowns = () => {
+        const now = Date.now();
 
-    function updateTimezoneVisibility() {
-      const timezonePanels = [
-        document.getElementById('tz-left'),
-        document.getElementById('tz-right')
-      ];
-      const countdowns = [
-        document.getElementById('countdown1'),
-        document.getElementById('countdown2')
-      ];
+        cards.forEach((item) => {
+          if (item.finished) return;
 
-      container.classList.remove('hide-timezones');
-      const panelsFit = window.innerWidth > 950 && timezonePanels.every(panel => {
-        const bounds = panel.getBoundingClientRect();
-        return bounds.left >= 0 && bounds.right <= window.innerWidth &&
-          bounds.top >= 0 && bounds.bottom <= window.innerHeight;
-      });
+          if (!Number.isFinite(item.target) || item.target <= now) {
+            item.finished = true;
+            item.clock.hidden = true;
+            item.complete.textContent = item.card.dataset.complete;
+            item.complete.hidden = false;
+            return;
+          }
 
-      container.classList.toggle('hide-timezones', !panelsFit);
+          // Rounding up keeps the clock from showing zero just before its target.
+          let secondsLeft = Math.ceil((item.target - now) / 1000);
+          const days = Math.floor(secondsLeft / 86400);
+          secondsLeft %= 86400;
+          const hours = Math.floor(secondsLeft / 3600);
+          secondsLeft %= 3600;
+          const minutes = Math.floor(secondsLeft / 60);
+          const seconds = secondsLeft % 60;
 
-      container.classList.remove('hide-seconds');
-      const countdownsFit = countdowns.every(countdown => {
-        const bounds = countdown.getBoundingClientRect();
-        return bounds.left >= 0 && bounds.right <= window.innerWidth &&
-          bounds.top >= 0 && bounds.bottom <= window.innerHeight;
-      });
-
-      container.classList.toggle('hide-seconds', !countdownsFit);
-    }
-
-    window.addEventListener('resize', adjustScale);
-    window.addEventListener('orientationchange', adjustScale);
-    window.addEventListener('load', adjustScale);
-
-    (function renderTimezones() {
-      const tzList = [
-        { zone: "America/Los_Angeles", label: "PT", code: "1f1fa-1f1f8" },
-        { zone: "America/Denver", label: "MT", code: "1f1fa-1f1f8" },
-        { zone: "America/Chicago", label: "CT", code: "1f1fa-1f1f8" },
-        { zone: "America/New_York", label: "ET", code: "1f1fa-1f1f8" },
-        { zone: "Europe/London", label: "GMT", code: "1f1ec-1f1e7" },
-        { zone: "Europe/Berlin", label: "CET", code: "1f1e9-1f1ea" },
-        { zone: "Africa/Johannesburg", label: "SAST", code: "1f1ff-1f1e6" },
-        { zone: "Asia/Kolkata", label: "IST", code: "1f1ee-1f1f3" },
-        { zone: "Asia/Singapore", label: "SGT", code: "1f1f8-1f1ec" },
-        { zone: "Asia/Tokyo", label: "JST", code: "1f1ef-1f1f5" },
-        { zone: "Australia/Sydney", label: "AEDT", code: "1f1e6-1f1fa" },
-        { zone: "Pacific/Auckland", label: "NZDT", code: "1f1f3-1f1ff" }
-      ];
-
-      const utcDate = new Date("2026-10-23T05:00:00Z");
-      const leftContainer = document.getElementById("tz-left");
-      const rightContainer = document.getElementById("tz-right");
-
-      const mid = Math.ceil(tzList.length / 2);
-      const leftZones = tzList.slice(0, mid);
-      const rightZones = tzList.slice(mid);
-
-      function createTimezoneBox(tz) {
-        const local = utcDate.toLocaleString("en-US", {
-          timeZone: tz.zone,
-          month: "short",
-          day: "numeric",
-          hour: "numeric",
-          minute: "2-digit",
-          hour12: true
+          item.clock.querySelector('[data-unit="days"]').textContent = pad(days);
+          item.clock.querySelector('[data-unit="hours"]').textContent = pad(hours);
+          item.clock.querySelector('[data-unit="minutes"]').textContent = pad(minutes);
+          item.clock.querySelector('[data-unit="seconds"]').textContent = pad(seconds);
         });
 
-        const box = document.createElement("div");
-        box.className = "tz-box";
+        if (cards.every((item) => item.finished)) window.clearInterval(intervalId);
+      };
 
-        const flagImg = document.createElement("img");
-        flagImg.src = `https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/${tz.code}.png`;
-        flagImg.alt = tz.label;
-        flagImg.loading = "lazy";
-
-        const text = document.createElement("span");
-        text.innerHTML = `${local} &ndash; <span class="tz-label">${tz.label}</span>`;
-
-        box.appendChild(flagImg);
-        box.appendChild(text);
-        return box;
-      }
-
-      leftZones.forEach(tz => leftContainer.appendChild(createTimezoneBox(tz)));
-      rightZones.forEach(tz => rightContainer.appendChild(createTimezoneBox(tz)));
+      let intervalId;
+      updateCountdowns();
+      if (cards.some((item) => !item.finished)) intervalId = window.setInterval(updateCountdowns, 1000);
+      document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) updateCountdowns();
+      });
     })();
   </script>
 </body>
