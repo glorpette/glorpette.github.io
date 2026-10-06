@@ -403,7 +403,7 @@
 
     .countdown {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: clamp(0.4rem, 1.2vw, 0.7rem);
     }
 
@@ -790,7 +790,6 @@
         </div>
         <div class="clock-area">
           <div class="countdown" role="timer" aria-label="Campaign Early Access countdown">
-            <div class="time-box"><span class="time-value" data-unit="days">00</span><span class="time-label">Days</span></div>
             <div class="time-box"><span class="time-value" data-unit="hours">00</span><span class="time-label">Hours</span></div>
             <div class="time-box"><span class="time-value" data-unit="minutes">00</span><span class="time-label">Minutes</span></div>
             <div class="time-box"><span class="time-value" data-unit="seconds">00</span><span class="time-label">Seconds</span></div>
@@ -812,7 +811,6 @@
         </div>
         <div class="clock-area">
           <div class="countdown" role="timer" aria-label="New Zealand launch countdown">
-            <div class="time-box"><span class="time-value" data-unit="days">00</span><span class="time-label">Days</span></div>
             <div class="time-box"><span class="time-value" data-unit="hours">00</span><span class="time-label">Hours</span></div>
             <div class="time-box"><span class="time-value" data-unit="minutes">00</span><span class="time-label">Minutes</span></div>
             <div class="time-box"><span class="time-value" data-unit="seconds">00</span><span class="time-label">Seconds</span></div>
@@ -835,7 +833,6 @@
         <div class="pc-release-grid">
           <div class="clock-area">
             <div class="countdown" role="timer" aria-label="Global PC launch countdown">
-              <div class="time-box"><span class="time-value" data-unit="days">00</span><span class="time-label">Days</span></div>
               <div class="time-box"><span class="time-value" data-unit="hours">00</span><span class="time-label">Hours</span></div>
               <div class="time-box"><span class="time-value" data-unit="minutes">00</span><span class="time-label">Minutes</span></div>
               <div class="time-box"><span class="time-value" data-unit="seconds">00</span><span class="time-label">Seconds</span></div>
@@ -1042,14 +1039,11 @@
 
           // Rounding up keeps the clock from showing zero just before its target.
           let secondsLeft = Math.ceil((item.target - now) / 1000);
-          const days = Math.floor(secondsLeft / 86400);
-          secondsLeft %= 86400;
           const hours = Math.floor(secondsLeft / 3600);
           secondsLeft %= 3600;
           const minutes = Math.floor(secondsLeft / 60);
           const seconds = secondsLeft % 60;
 
-          item.clock.querySelector('[data-unit="days"]').textContent = pad(days);
           item.clock.querySelector('[data-unit="hours"]').textContent = pad(hours);
           item.clock.querySelector('[data-unit="minutes"]').textContent = pad(minutes);
           item.clock.querySelector('[data-unit="seconds"]').textContent = pad(seconds);
