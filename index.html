@@ -11,12 +11,12 @@
   <meta property="og:title" content="Modern Warfare 4 — Launch Clock" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://mw4.mxr.lol" />
-  <meta property="og:image" content="https://mw4.mxr.lol/launch-timeline.png?v=6" />
+  <meta property="og:image" content="https://mw4.mxr.lol/launch-timeline.png?v=7" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:width" content="720" />
-  <meta property="og:image:height" content="360" />
-  <meta property="og:image:alt" content="Modern Warfare 4 launch timeline: Campaign Early Access on 16 Oct 2026 at 17:00 UTC (10:00 AM PDT). New Zealand launch on 23 Oct at 00:00 NZDT, and global PC launch on 23 Oct at 05:00 UTC." />
-  <meta property="og:description" content="Campaign early access and global launch countdowns." />
+  <meta property="og:image:height" content="420" />
+  <meta property="og:image:alt" content="Modern Warfare 4 launch timeline: Campaign Early Access on 16 Oct 2026 at 17:00 UTC (10:00 AM PDT). DMZ Early Access on 20 Oct at 17:00 UTC (estimated; 9–10 AM PDT unconfirmed). New Zealand launch on 23 Oct at 00:00 NZDT, and global PC launch on 23 Oct at 05:00 UTC." />
+  <meta property="og:description" content="Campaign and DMZ early access, New Zealand, and global PC launch countdowns." />
 
   <script id="discord:component-embed" type="application/json">
     {
@@ -32,8 +32,8 @@
             "type": 12,
             "items": [
               {
-                "media": { "url": "https://mw4.mxr.lol/launch-timeline.png?v=6" },
-                "description": "2026 launch times: Campaign Early Access — 16 Oct, 17:00 UTC (10:00 AM PDT). New Zealand — 23 Oct, 00:00 NZDT; Global PC — 23 Oct, 05:00 UTC."
+                "media": { "url": "https://mw4.mxr.lol/launch-timeline.png?v=7" },
+                "description": "2026 launch times: Campaign Early Access — 16 Oct, 17:00 UTC (10:00 AM PDT). DMZ Early Access — 20 Oct, 17:00 UTC (estimated; 9–10 AM PDT unconfirmed). New Zealand — 23 Oct, 00:00 NZDT; Global PC — 23 Oct, 05:00 UTC."
               }
             ]
           },
@@ -228,8 +228,12 @@
       animation-delay: 285ms;
     }
 
-    .footer {
+    .release-card:nth-child(4) {
       animation-delay: 360ms;
+    }
+
+    .footer {
+      animation-delay: 435ms;
     }
 
     .brand-lockup {
@@ -837,10 +841,32 @@
         </div>
       </article>
 
+      <article class="release-card" data-countdown data-target="2026-10-20T17:00:00Z" data-complete="The estimated DMZ Early Access start time has arrived. Check official channels for availability.">
+        <div class="release-copy">
+          <div class="release-kicker">
+            <span class="release-index">02 // DMZ EARLY ACCESS</span>
+            <span class="status-chip status-chip--quiet">Time unconfirmed</span>
+          </div>
+          <h2>DMZ Early Access</h2>
+          <p class="release-description">Get an early start in DMZ.</p>
+          <p class="release-date"><time datetime="2026-10-20T17:00:00Z">20 October 2026 · 17:00 UTC*</time></p>
+          <p class="campaign-note">*Estimated: 10:00 AM Pacific (PDT). The start time may be 9:00 AM PDT (16:00 UTC); timing is unconfirmed.</p>
+          <p class="local-time" hidden><span class="local-time-label">Your local time (estimated)</span><time data-local-time datetime="2026-10-20T17:00:00Z">20 Oct 2026, 5:00 PM UTC</time></p>
+        </div>
+        <div class="clock-area">
+          <div class="countdown" role="timer" aria-label="Estimated DMZ Early Access countdown">
+            <div class="time-box"><span class="time-value" data-unit="hours">00</span><span class="time-label">Hours</span></div>
+            <div class="time-box"><span class="time-value" data-unit="minutes">00</span><span class="time-label">Minutes</span></div>
+            <div class="time-box"><span class="time-value" data-unit="seconds">00</span><span class="time-label">Seconds</span></div>
+          </div>
+          <p class="complete-message" role="status" hidden></p>
+        </div>
+      </article>
+
       <article class="release-card" data-countdown data-target="2026-10-22T11:00:00Z" data-complete="The New Zealand release window has begun.">
         <div class="release-copy">
           <div class="release-kicker">
-            <span class="release-index">02 // CONSOLE + XBOX PC APP</span>
+            <span class="release-index">03 // CONSOLE + XBOX PC APP</span>
             <span class="status-chip status-chip--quiet">New Zealand</span>
           </div>
           <h2>New Zealand launch</h2>
@@ -861,7 +887,7 @@
       <article class="release-card release-card--pc" data-countdown data-target="2026-10-23T05:00:00Z" data-complete="Modern Warfare 4 is available worldwide on PC.">
         <div class="release-copy">
           <div class="release-kicker">
-            <span class="release-index">03 // WORLDWIDE</span>
+            <span class="release-index">04 // WORLDWIDE</span>
             <span class="status-chip status-chip--quiet">PC launch</span>
           </div>
           <h2>Global PC launch</h2>
