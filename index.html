@@ -496,6 +496,18 @@
       text-align: center;
     }
 
+    .release-card.release-card--complete {
+      padding: 0;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .release-card--complete::before {
+      display: none;
+    }
+
     .campaign-note {
       margin: 0.75rem 0 0;
       color: #c0ae6d;
@@ -1099,6 +1111,8 @@
             item.clock.hidden = true;
             item.complete.textContent = item.card.dataset.complete;
             item.complete.hidden = false;
+            item.card.replaceChildren(item.complete);
+            item.card.classList.add("release-card--complete");
             return;
           }
 
