@@ -508,6 +508,21 @@
       display: none;
     }
 
+    @keyframes banner-breathe {
+      0%, 100% {
+        border-color: rgba(255, 208, 0, 0.22);
+        background-color: rgba(255, 208, 0, 0.055);
+      }
+      50% {
+        border-color: rgba(255, 208, 0, 0.38);
+        background-color: rgba(255, 208, 0, 0.095);
+      }
+    }
+
+    .release-card--complete .complete-message {
+      animation: banner-breathe 4s ease-in-out infinite;
+    }
+
     .campaign-note {
       margin: 0.75rem 0 0;
       color: #c0ae6d;
@@ -808,6 +823,10 @@
         animation: none !important;
         opacity: 1;
         transform: none;
+      }
+
+      .release-card--complete .complete-message {
+        animation: none !important;
       }
     }
   </style>
@@ -1128,7 +1147,12 @@
           item.clock.querySelector('[data-unit="seconds"]').textContent = pad(seconds);
         });
 
-        if (cards.every((item) => item.finished)) window.clearInterval(intervalId);
+        const nextCard = cards.find((item) => !item.finished);
+        cards.forEach((item) => {
+          item.card.classList.toggle("release-card--next", item === nextCard);
+        });
+
+        if (!nextCard) window.clearInterval(intervalId);
       };
 
       let intervalId;
