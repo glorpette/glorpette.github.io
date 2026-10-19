@@ -64,6 +64,16 @@
     }
     .subtimer output { color: #ffd000; font-variant-numeric: tabular-nums; white-space: nowrap; }
 
+    .timer-digit { display: inline-block; }
+    .is-live { animation: live-glow 3.5s ease-in-out infinite; }
+    @keyframes live-glow {
+      0%, 100% { text-shadow: 0 0 5px rgba(255, 208, 0, 0.12); }
+      50% { text-shadow: 0 0 14px rgba(255, 208, 0, 0.4); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .is-live { animation: none; }
+    }
+
     @media (max-width: 380px) {
       body { padding: 10px; }
       .overlay { padding: 18px 16px; }
@@ -85,6 +95,41 @@
       const timer = document.getElementById("timer");
       const subtimer = document.getElementById("subtimer");
       const subtimerValue = document.getElementById("subtimer-value");
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const animateChange = (element) => {
+        if (reducedMotion.matches) return;
+        element.getAnimations().forEach((animation) => animation.cancel());
+        element.animate([
+          { opacity: 0.55, transform: "translateY(-3px)" },
+          { opacity: 1, transform: "translateY(0)" }
+        ], { duration: 240, easing: "ease-out" });
+      };
+      const renderTimer = (element, text) => {
+        const live = text === "LIVE NOW!";
+        element.classList.toggle("is-live", live);
+        if (element.textContent === text) return;
+        if (live) {
+          element.textContent = text;
+          return;
+        }
+        const characters = [...text];
+        if (element.childNodes.length !== characters.length || !element.querySelector(".timer-digit")) {
+          element.replaceChildren(...characters.map((character) => {
+            if (!/\d/.test(character)) return document.createTextNode(character);
+            const digit = document.createElement("span");
+            digit.className = "timer-digit";
+            digit.textContent = character;
+            return digit;
+          }));
+          return;
+        }
+        characters.forEach((character, index) => {
+          const node = element.childNodes[index];
+          if (node.textContent === character) return;
+          node.textContent = character;
+          if (node instanceof Element) animateChange(node);
+        });
+      };
       const liveDuration = 60 * 60 * 1000;
       let audioContext;
       const prepareAudio = () => {
@@ -161,10 +206,13 @@
             const current = releases.find((release) => release.target + liveDuration > now) || releases[releases.length - 1];
             timer.hidden = false;
             subtimer.hidden = !Number.isFinite(current.subtarget) || now >= current.subtarget + liveDuration;
-            name.textContent = current.name;
-            timer.textContent = now >= current.target ? "LIVE NOW!" : format(current.target, now);
+            if (name.textContent !== current.name) {
+              name.textContent = current.name;
+              animateChange(name);
+            }
+            renderTimer(timer, now >= current.target ? "LIVE NOW!" : format(current.target, now));
             if (!subtimer.hidden) {
-              subtimerValue.textContent = now >= current.subtarget ? "LIVE NOW!" : format(current.subtarget, now);
+              renderTimer(subtimerValue, now >= current.subtarget ? "LIVE NOW!" : format(current.subtarget, now));
             }
             const reachedTargets = [current.target, current.subtarget].filter((target) =>
               previousNow !== null && previousNow < target && now >= target &&
