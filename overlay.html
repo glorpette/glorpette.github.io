@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Modern Warfare 4 — OBS Countdown</title>
+  <style>
+    @font-face {
+      font-family: "Hitmarker";
+      src: url("HitmarkerNormal-Medium.woff2") format("woff2");
+      font-weight: 500;
+      font-display: swap;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; background: transparent; }
+    body { padding: 16px; color: #f4f5f2; font-family: Arial, sans-serif; }
+    [hidden] { display: none !important; }
+
+    .overlay {
+      width: min(100%, 480px);
+      padding: 22px 24px;
+      border: 1px solid rgba(255, 208, 0, 0.32);
+      border-radius: 18px;
+      background: rgba(9, 12, 14, 0.78);
+    }
+
+    h1 { margin: 0; font-size: clamp(16px, 4vw, 21px); font-weight: 600; line-height: 1.3; }
+    .timer {
+      margin-top: 12px;
+      color: #ffd000;
+      font-family: "Hitmarker", Arial, sans-serif;
+      font-size: clamp(24px, 8vw, 46px);
+      font-weight: 500;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .subtimer {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 208, 0, 0.2);
+      font-size: clamp(12px, 3vw, 15px);
+      line-height: 1.4;
+    }
+    .subtimer output { color: #ffd000; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+    @media (max-width: 380px) {
+      body { padding: 10px; }
+      .overlay { padding: 18px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="overlay" aria-label="Launch countdown">
+    <h1 id="name">Launch countdown</h1>
+    <div class="timer" id="timer" role="timer" aria-live="off" hidden></div>
+    <div class="subtimer" id="subtimer" hidden>
+      <span>Day 0 update</span>
+      <output id="subtimer-value" role="timer" aria-live="off"></output>
+    </div>
+  </main>
+  <script>
+    (() => {
+      const name = document.getElementById("name");
+      const timer = document.getElementById("timer");
+      const subtimer = document.getElementById("subtimer");
+      const subtimerValue = document.getElementById("subtimer-value");
+      const pad = (value) => String(value).padStart(2, "0");
+      const format = (target, now) => {
+        const seconds = Math.ceil((target - now) / 1000);
+        return `${pad(Math.floor(seconds / 3600))}h ${pad(Math.floor((seconds % 3600) / 60))}m ${pad(seconds % 60)}s`;
+      };
+
+      // Read the main page so launch dates and milestone order stay in sync.
+      fetch("index.html", { cache: "no-cache" })
+        .then((response) => {
+          if (!response.ok) throw new Error("Unable to load launch times");
+          return response.text();
+        })
+        .then((html) => {
+          const source = new DOMParser().parseFromString(html, "text/html");
+          const releases = [...source.querySelectorAll("[data-countdown]")].map((card) => ({
+            name: card.querySelector("h2").textContent,
+            target: Date.parse(card.dataset.target),
+            subtarget: Date.parse(card.querySelector("[data-update-countdown]")?.dataset.target)
+          })).filter((release) => Number.isFinite(release.target));
+          if (!releases.length) throw new Error("No launch times found");
+
+          let intervalId;
+          const update = () => {
+            const now = Date.now();
+            const current = releases.find((release) => release.target > now);
+            timer.hidden = !current;
+            subtimer.hidden = !current || !(current.subtarget > now);
+            if (!current) {
+              name.textContent = "Modern Warfare 4 is live";
+              window.clearInterval(intervalId);
+              return;
+            }
+            name.textContent = current.name;
+            timer.textContent = format(current.target, now);
+            if (!subtimer.hidden) subtimerValue.textContent = format(current.subtarget, now);
+          };
+
+          update();
+          if (releases.some((release) => release.target > Date.now())) {
+            intervalId = window.setInterval(update, 1000);
+          }
+          document.addEventListener("visibilitychange", () => {
+            if (!document.hidden) update();
+          });
+        })
+        .catch(() => { name.textContent = "Countdown unavailable"; });
+    })();
+  </script>
+</body>
+</html>
