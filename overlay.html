@@ -85,6 +85,53 @@
       const timer = document.getElementById("timer");
       const subtimer = document.getElementById("subtimer");
       const subtimerValue = document.getElementById("subtimer-value");
+      const liveDuration = 60 * 60 * 1000;
+      let audioContext;
+      const prepareAudio = () => {
+        try {
+          audioContext ||= new (window.AudioContext || window.webkitAudioContext)();
+          return audioContext;
+        } catch {
+          return null;
+        }
+      };
+      const playLaunchCue = async () => {
+        const context = prepareAudio();
+        if (!context) return;
+        const triggeredAt = Date.now();
+        try {
+          if (context.state === "suspended") await context.resume();
+          // Never play an old cue later if browser autoplay was blocked.
+          if (context.state !== "running" || Date.now() - triggeredAt > 5000) return;
+          const cueStart = context.currentTime;
+          // Five gentle pairs, with space between them and a fading final pair.
+          Array.from({ length: 10 }, (_, index) => index).forEach((index) => {
+            const repeat = Math.floor(index / 2);
+            const frequency = index % 2 === 0 ? 523.25 : 659.25;
+            const start = cueStart + repeat * 1.6 + (index % 2) * 0.32;
+            const tone = context.createOscillator();
+            const volume = context.createGain();
+            tone.type = "sine";
+            tone.frequency.value = frequency;
+            volume.gain.setValueAtTime(0, start);
+            const peak = repeat === 4 ? 0.025 : 0.045;
+            volume.gain.linearRampToValueAtTime(peak, start + 0.05);
+            volume.gain.exponentialRampToValueAtTime(0.001, start + 0.6);
+            volume.gain.linearRampToValueAtTime(0, start + 0.65);
+            tone.connect(volume);
+            volume.connect(context.destination);
+            tone.onended = () => { tone.disconnect(); volume.disconnect(); };
+            tone.start(start);
+            tone.stop(start + 0.65);
+          });
+        } catch {
+          // A muted or unavailable audio device must not interrupt the timer.
+        }
+      };
+      // OBS allows autoplay; a normal browser may need an interaction first.
+      document.addEventListener("pointerdown", () => {
+        prepareAudio()?.resume().catch(() => {});
+      });
       const pad = (value) => String(value).padStart(2, "0");
       const format = (target, now) => {
         const seconds = Math.ceil((target - now) / 1000);
@@ -107,23 +154,34 @@
           if (!releases.length) throw new Error("No launch times found");
 
           let intervalId;
+          let previousNow = null;
+          const playedTargets = new Set();
           const update = () => {
             const now = Date.now();
-            const current = releases.find((release) => release.target > now);
-            timer.hidden = !current;
-            subtimer.hidden = !current || !(current.subtarget > now);
-            if (!current) {
-              name.textContent = "Modern Warfare 4 is live";
-              window.clearInterval(intervalId);
-              return;
-            }
+            const current = releases.find((release) => release.target + liveDuration > now) || releases[releases.length - 1];
+            timer.hidden = false;
+            subtimer.hidden = !Number.isFinite(current.subtarget) || now >= current.subtarget + liveDuration;
             name.textContent = current.name;
-            timer.textContent = format(current.target, now);
-            if (!subtimer.hidden) subtimerValue.textContent = format(current.subtarget, now);
+            timer.textContent = now >= current.target ? "LIVE NOW!" : format(current.target, now);
+            if (!subtimer.hidden) {
+              subtimerValue.textContent = now >= current.subtarget ? "LIVE NOW!" : format(current.subtarget, now);
+            }
+            const reachedTargets = [current.target, current.subtarget].filter((target) =>
+              previousNow !== null && previousNow < target && now >= target &&
+              now < target + liveDuration && !playedTargets.has(target)
+            );
+            if (reachedTargets.length) {
+              reachedTargets.forEach((target) => playedTargets.add(target));
+              void playLaunchCue();
+            }
+            previousNow = now;
+            if (releases.every((release) => now >= release.target + liveDuration)) {
+              window.clearInterval(intervalId);
+            }
           };
 
           update();
-          if (releases.some((release) => release.target > Date.now())) {
+          if (releases.some((release) => release.target + liveDuration > Date.now())) {
             intervalId = window.setInterval(update, 1000);
           }
           document.addEventListener("visibilitychange", () => {
