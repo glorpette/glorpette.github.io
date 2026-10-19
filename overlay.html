@@ -26,6 +26,7 @@
 
     .overlay {
       width: min(100%, 480px);
+      margin-inline: auto;
       padding: 22px 24px;
       border: 1px solid rgba(255, 208, 0, 0.32);
       border-radius: 18px;
@@ -66,14 +67,17 @@
 
     .timer-parts {
       display: inline-grid;
-      grid-template-columns: repeat(3, 2.75em);
-      column-gap: 0.1em;
+      grid-template-columns: repeat(3, 2.4em);
+      column-gap: 0.4em;
     }
-    .timer.timer-parts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .timer.timer-parts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 0.2em; }
     .timer-unit { display: inline-flex; justify-content: center; align-items: baseline; }
-    .timer-number { display: inline-flex; justify-content: flex-end; min-width: 2.04em; }
-    .timer-digit { display: inline-block; width: 0.68em; text-align: center; }
-    .timer-suffix { display: inline-block; width: 0.7em; text-align: center; }
+    .timer-number { display: inline-flex; justify-content: center; }
+    .timer-digit { display: inline-block; width: 0.84em; text-align: center; letter-spacing: 0; }
+    .timer-suffix { display: inline-block; width: 1em; margin-left: 0.25em; text-align: center; }
+    .timer .timer-suffix { font-family: "Hitmarker Text", Arial, sans-serif; font-size: 0.45em; }
+    .subtimer .timer-digit { width: 0.62em; }
+    .subtimer .timer-suffix { width: 1em; margin-left: 0.12em; }
     .is-live { animation: live-glow 3.5s ease-in-out infinite; }
     @keyframes live-glow {
       0%, 100% { text-shadow: 0 0 5px rgba(255, 208, 0, 0.12); }
