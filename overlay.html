@@ -64,7 +64,16 @@
     }
     .subtimer output { color: #ffd000; font-variant-numeric: tabular-nums; white-space: nowrap; }
 
-    .timer-digit { display: inline-block; }
+    .timer-parts {
+      display: inline-grid;
+      grid-template-columns: repeat(3, 2.75em);
+      column-gap: 0.1em;
+    }
+    .timer.timer-parts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .timer-unit { display: inline-flex; justify-content: center; align-items: baseline; }
+    .timer-number { display: inline-flex; justify-content: flex-end; min-width: 2.04em; }
+    .timer-digit { display: inline-block; width: 0.68em; text-align: center; }
+    .timer-suffix { display: inline-block; width: 0.7em; text-align: center; }
     .is-live { animation: live-glow 3.5s ease-in-out infinite; }
     @keyframes live-glow {
       0%, 100% { text-shadow: 0 0 5px rgba(255, 208, 0, 0.12); }
@@ -107,27 +116,44 @@
       const renderTimer = (element, text) => {
         const live = text === "LIVE NOW!";
         element.classList.toggle("is-live", live);
+        element.classList.toggle("timer-parts", !live);
         if (element.textContent === text) return;
         if (live) {
           element.textContent = text;
           return;
         }
-        const characters = [...text];
-        if (element.childNodes.length !== characters.length || !element.querySelector(".timer-digit")) {
-          element.replaceChildren(...characters.map((character) => {
-            if (!/\d/.test(character)) return document.createTextNode(character);
-            const digit = document.createElement("span");
-            digit.className = "timer-digit";
-            digit.textContent = character;
-            return digit;
+        const parts = text.match(/^(\d+)h (\d+)m (\d+)s$/).slice(1);
+        if (!element.querySelector(".timer-unit")) {
+          element.replaceChildren(...["h", "m", "s"].map((unit, index) => {
+            const group = document.createElement("span");
+            group.className = "timer-unit";
+            const number = document.createElement("span");
+            number.className = "timer-number";
+            const suffix = document.createElement("span");
+            suffix.className = "timer-suffix";
+            suffix.textContent = unit;
+            group.append(number, suffix);
+            if (index < 2) group.append(document.createTextNode(" "));
+            return group;
           }));
-          return;
         }
-        characters.forEach((character, index) => {
-          const node = element.childNodes[index];
-          if (node.textContent === character) return;
-          node.textContent = character;
-          if (node instanceof Element) animateChange(node);
+        parts.forEach((part, index) => {
+          const number = element.querySelectorAll(".timer-number")[index];
+          if (number.childNodes.length !== part.length) {
+            number.replaceChildren(...[...part].map((character) => {
+              const digit = document.createElement("span");
+              digit.className = "timer-digit";
+              digit.textContent = character;
+              return digit;
+            }));
+            return;
+          }
+          [...part].forEach((character, digitIndex) => {
+            const digit = number.childNodes[digitIndex];
+            if (digit.textContent === character) return;
+            digit.textContent = character;
+            animateChange(digit);
+          });
         });
       };
       const liveDuration = 60 * 60 * 1000;
